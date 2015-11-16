@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.syd.hand_shanwei_2.R;
 
+import org.apache.http.client.HttpClient;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +29,9 @@ import java.util.List;
 import Adapters.ViewAdapter;
 import Http_Utils.Get_Today_Seats;
 import Local_Utils.UserinfoUtils;
+import Service.MD5Tools;
+import Service.YuyueService;
+import Service.YuyueTools;
 
 /**
  * Created by Admin on 2015/11/12.
@@ -35,6 +40,10 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
     /*//登陆信息进行本地存储
     SharedPreferences sharedPreferences;*/
     //本地信息管理工具
+    public static HttpClient client;
+    private static MD5Tools md5Tools=new MD5Tools();
+    private static YuyueTools yuyueTools=new YuyueTools();
+    private YuyueService yuYueService=new YuyueService();
     UserinfoUtils userinfoUtils;
     ActionBar actionBar;
     //存储屏幕高度和宽度
@@ -71,8 +80,8 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         actionBar.setDisplayShowCustomEnabled(true);
        // actionBar.setDisplayHomeAsUpEnabled(true);
         //actionBar.setIcon(R.drawable.welcome);
-        btnlog= (Button) views.get(2).findViewById(R.id.btn_login);
-        btnlog.setOnClickListener(this);
+        //btnlog= (Button) views.get(2).findViewById(R.id.btn_log_in_out);
+        //btnlog.setOnClickListener(this);
         //初始化座位数组
         allseats=new int[FLOORS];
         current_seats=new int[FLOORS];
@@ -270,9 +279,10 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
                 }
                 break;
             case R.id.btn_see_collect_book_route://个人中心查看借书路线
-                Intent intent=new Intent()
+                //跳转到查看结束路线
+                Intent intent=new Intent(HomeActivity.this,Aty_Book_Route.class);
+                startActivity(intent);
                 break;
-
         }
     }
 
