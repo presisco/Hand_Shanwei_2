@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">掌动山威</string>
+    <string name="app_name_eng">hand_shanwei</string>
+    <string name="order_seat_tomorrow">预约明天座位</string>
+    <string name="order_time">预约日期</string>
+    <string name="select_floor">选择楼层</string>
+    <string name="login">登录</string>
+    <string name="log_out">退出登录</string>
+</resources>
