@@ -6,4 +6,6 @@
     <string name="select_floor">选择楼层</string>
     <string name="login">登录</string>
     <string name="log_out">退出登录</string>
+    <string name="order_fail">预约失败</string>
+    <string name="order_success">预约成功</string>
 </resources>

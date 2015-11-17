@@ -10,7 +10,6 @@ public class MD5Tools {
      * @param args
      */
     public static void main(String[] args) {
-
     }
 
     /**

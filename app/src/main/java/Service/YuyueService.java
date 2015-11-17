@@ -106,7 +106,6 @@ public class YuyueService {
                     date);
 
             // System.out.println(res);
-
             if (res.contains("已经存在有效的预约记录")) {
                 return "fail";
             }
@@ -129,7 +128,6 @@ public class YuyueService {
      * 取消功能
      */
     public boolean Cancel(HttpClient client) {
-
         List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
         // 构建实体数据
         postParameters.add(new BasicNameValuePair("subCmd", ""));

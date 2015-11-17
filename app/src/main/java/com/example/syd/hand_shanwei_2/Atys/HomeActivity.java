@@ -80,8 +80,6 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         actionBar.setDisplayShowCustomEnabled(true);
        // actionBar.setDisplayHomeAsUpEnabled(true);
         //actionBar.setIcon(R.drawable.welcome);
-        //btnlog= (Button) views.get(2).findViewById(R.id.btn_log_in_out);
-        //btnlog.setOnClickListener(this);
         //初始化座位数组
         allseats=new int[FLOORS];
         current_seats=new int[FLOORS];
@@ -89,7 +87,8 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         initViews();
         //获取屏幕宽高，计算各自的宽度
         //初始化tab_title
-        //initDots();
+        btnlog= (Button) views.get(2).findViewById(R.id.btn_log_in_out);
+        btnlog.setOnClickListener(this);
         for (int i = 0; i <3 ; i++) {
             actionBar.addTab(actionBar.newTab().setCustomView(tab_layout_id[i]).setTabListener(this));
         }
@@ -105,7 +104,6 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         //预约按钮事件
         btnorder_tomorrow= (Button) views.get(0).findViewById(R.id.order_tomorrow);
         btnorder_tomorrow.setOnClickListener(this);
-
     }
     //初始化tab_title
     /*private void initDots() {
@@ -123,6 +121,7 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         views.add(layoutInflater.inflate(R.layout.tab01layout, null));
         views.add(layoutInflater.inflate(R.layout.tab02layout, null));
         views.add(layoutInflater.inflate(R.layout.tab03layout, null));
+        //System.out.println("11111111111111111111111111111"+views.size());
         ViewAdapter viewAdapter=new ViewAdapter(views);
         viewPager= (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(viewAdapter);

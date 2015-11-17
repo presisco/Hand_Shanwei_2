@@ -38,7 +38,7 @@ public class YuyueTools {
     }
 
     /**
-     * 得到预约信息
+     * 得到指定房间预约信息,
      * @param client
      * @return
      * @throws Exception
@@ -46,17 +46,14 @@ public class YuyueTools {
     public static List<String> getYuYueInfo(HttpClient client, String room, String date) throws Exception
     {
         List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-
         // 构建实体数据
         postParameters.add(new BasicNameValuePair("subCmd", "query"));
         postParameters.add(new BasicNameValuePair("selReadingRoom", room));
-
         postParameters.add(new BasicNameValuePair("txtBookDate", date));
         postParameters.add(new BasicNameValuePair("hidBookDate", ""));
         postParameters.add(new BasicNameValuePair("hidRrId", ""));
         postParameters.add(new BasicNameValuePair("__EVENTVALIDATION","/wEWBQKn3LCMAgKP25+PBwKozKffBwKe8pjrCQLbhOG0Ag8P+D24L0yDPqWsH9l8fvFZfIvf5D0SWty7+UgyaODK"));
         postParameters.add(new BasicNameValuePair("__VIEWSTATE","/wEPDwUKLTgxNTcwOTg4OQ9kFgICAw9kFgYCBw8QZA8WDGYCAQICAgMCBAIFAgYCBwIIAgkCCgILFgwQBQbkuInmpbwFBjAwMDEwM2cQBQblm5vmpbwFBjAwMDEwNGcQBQbkupTmpbwFBjAwMDEwNWcQBQblha3mpbwFBjAwMDEwNmcQBQbkuIPmpbwFBjAwMDEwN2cQBQblhavmpbwFBjAwMDEwOGcQBQbkuZ3mpbwFBjAwMDEwOWcQBQbljYHmpbwFBjAwMDExMGcQBQnljYHkuIDmpbwFBjAwMDExMWcQBQnljYHkuozmpbwFBjAwMDExMmcQBRLlm77kuJznjq/mpbzkuInmpbwFBjAwMDIwM2cQBRLlm77kuJznjq/mpbzlm5vmpbwFBjAwMDIwNGdkZAIJDxYEHglpbm5lcmh0bWxlHgdWaXNpYmxlaGQCCw88KwAJAGRk3N7Y/deh68M4Efs081yDORR8De16X09J94eraQdd4ek="));
-
         // 发送post请求
         String yuyueInfo = HttpTools.getYuYueInfoPost("http://yuyue.juneberry.cn/BookSeat/BookSeatListForm.aspx", client, postParameters);
 
@@ -76,12 +73,9 @@ public class YuyueTools {
     public static String getEandVAttri(String s, String beginStr, String endStr)
     {
         String sub_s = s;
-
         int b_index = sub_s.indexOf(beginStr) + beginStr.length();
         sub_s = sub_s.substring(b_index);
-
         int e_index = sub_s.indexOf(endStr);
-
         return sub_s.substring(0, e_index);
     }
 
@@ -103,7 +97,7 @@ public class YuyueTools {
     }
 
     /**
-     * 提交预约信息
+     * 提交预约信息,精准预约
      * @param client
      * @return
      * @throws Exception
