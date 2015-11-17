@@ -171,17 +171,13 @@ public class OrderSeatService extends Service{
         // 随机生成room号
         String[] rooms = { "103", "104", "105", "106", "107", "108", "109",
                 "110", "111", "112", "203", "204" };
-
         Random random = new Random();
         int index = random.nextInt(rooms.length); // 随机生成一个
-
         String room = rooms[index]; // 获取房间No
-
         // System.out.println("room：" + room);
 
         // 测试，他妈的座位都被抢光了。
         // room = "103";
-
         List<String> list =getYuYueInfo(client, "000" + room, date); // 获取该房间的列表
 
         if (0 == list.size()) {
@@ -190,12 +186,9 @@ public class OrderSeatService extends Service{
         } else {
             // 获取座位
             String sitNo = list.get(random.nextInt(list.size()));
-
             // sitNo = "25";
-
             String res = subYuYueInfo(client, "000" + room, sitNo,
                     date);
-
             // System.out.println(res);
             if (res.contains("已经存在有效的预约记录")) {
                 return "fail";
@@ -211,7 +204,6 @@ public class OrderSeatService extends Service{
 
             info += "</infos>";*/
             String s=room.charAt(room.length() - 1) +"楼"+sitNo+"座位号"+"日期："+date;
-
             return s;
         }
 
@@ -320,7 +312,6 @@ public class OrderSeatService extends Service{
         System.out.println("得到指定房间预约信息返回结果\n"+lists);
         return lists;
     }
-
     /**
      * 根据s获取属性值
      * @param s
@@ -451,6 +442,4 @@ public class OrderSeatService extends Service{
         }
         return result;
     }
-
-
 }

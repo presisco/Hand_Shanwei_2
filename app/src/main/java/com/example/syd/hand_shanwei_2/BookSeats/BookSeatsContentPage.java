@@ -63,12 +63,12 @@ public class BookSeatsContentPage extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab01layout, container, false);
         //Test Data Gen
-         genTestData();
+        mDataSet=new FloorInfo[0];
+        new DummyBackgroundTask().execute();
+        genTestData();
         if (isfirstin){
             //mDataSet=new FloorInfo[12];
-
             initiateRefresh();
-
         }
         // Retrieve the SwipeRefreshLayout and ListView instances
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.curFloorsSwipeRefresh);
@@ -99,6 +99,8 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        genTestData();
+
         // BEGIN_INCLUDE (setup_refreshlistener)
         /**
          * Implement {@link SwipeRefreshLayout.OnRefreshListener}. When users do the "swipe to
@@ -125,8 +127,6 @@ public class BookSeatsContentPage extends Fragment{
         super.onResume();
 
     }
-
-
     private void initiateRefresh() {
         //Log.i(LOG_TAG, "initiateRefresh");
 
@@ -149,7 +149,8 @@ public class BookSeatsContentPage extends Fragment{
         Toast.makeText(getActivity(),"加载完成",Toast.LENGTH_SHORT).show();
         // Remove all items from the ListAdapter, and then replace them with the new items
        // mDataSet=null;
-        genTestData();
+        mFloorInfoAdapter.updateDataSet(mDataSet);
+        mFloorInfoAdapter.notifyDataSetChanged();
 
         // Stop the refreshing indicator
         mSwipeRefreshLayout.setRefreshing(false);
@@ -189,13 +190,15 @@ public class BookSeatsContentPage extends Fragment{
                 //System.out.println(userinfoUtils.get_LastId()+"==="+userinfoUtils.get_LastPassword());
                 floorInfos=OrderSeatService.getFloorInfo(userinfoUtils.get_LastId(),userinfoUtils.get_LastPassword());
                 isfirstin=false;
-               /* for (int j=0;j<12;j++){
+                mDataSet=new FloorInfo[12];
+               for (int j=0;j<12;j++){
                     mDataSet[j]=new FloorInfo();
                     mDataSet[j].total=floorInfos.get(j).total;
                     mDataSet[j].rest=floorInfos.get(j).rest;
                     mDataSet[j].layer=floorInfos.get(j).layer;
                     System.out.println(mDataSet[j].total+"=="+mDataSet[j].layer+"=="+mDataSet[j].rest);
-                }*/
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -219,14 +222,7 @@ public class BookSeatsContentPage extends Fragment{
                mDataSet[i] = new FloorInfo();
                 mDataSet[i].layer = i + " Fl";
                 mDataSet[i].total = 100;
-                mDataSet[i].rest = (int) Math.random() * 100;
-            }
-        }else {
-            for (int i = 0; i < 12; i++) {
-                //mDataSet[i] = new FloorInfo();
-                mDataSet[i].layer ="1";
-                mDataSet[i].total =2;
-                mDataSet[i].rest =3;
+                mDataSet[i].rest = 100;
             }
         }
     }

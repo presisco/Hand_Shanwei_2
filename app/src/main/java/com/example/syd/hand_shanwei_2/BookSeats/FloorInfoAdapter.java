@@ -51,6 +51,10 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
         mDataSet = dataSet;
     }
 
+    public void updateDataSet(FloorInfo[] dataset)
+    {
+        mDataSet=dataset;
+    }
     // BEGIN_INCLUDE(recyclerViewOnCreateViewHolder)
     // Create new views (invoked by the layout manager)
     @Override
@@ -71,13 +75,27 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        TextView op = (TextView) viewHolder.getCardView().findViewById(R.id.floorNameTextView);
-        op.setText(mDataSet[position].layer);
-        op = (TextView) viewHolder.getCardView().findViewById(R.id.floorCapTextView);
-        op.setText(parent.getResources().getString(R.string.floor_info_cap)+mDataSet[position].total);
-        op = (TextView) viewHolder.getCardView().findViewById(R.id.floorCurrentTextView);
-        op.setText(parent.getResources().getString(R.string.floor_info_cur)+mDataSet[position].rest);
-
+        TextView op1 = (TextView) viewHolder.getCardView().findViewById(R.id.floorNameTextView);
+        op1.setText(mDataSet[position].layer);
+        TextView op2 = (TextView) viewHolder.getCardView().findViewById(R.id.floorCapTextView);
+        op2.setText(parent.getResources().getString(R.string.floor_info_cap)+mDataSet[position].total);
+        TextView op3 = (TextView) viewHolder.getCardView().findViewById(R.id.floorCurrentTextView);
+        op3.setText(parent.getResources().getString(R.string.floor_info_cur) + mDataSet[position].rest);
+        if (mDataSet[position].rest<=0)
+        //viewHolder.getCardView().setCardBackgroundColor(R.color.red);
+        {
+            op1.setTextColor(parent.getResources().getColor(R.color.red));
+            op2.setTextColor(parent.getResources().getColor(R.color.red));
+            op3.setTextColor(parent.getResources().getColor(R.color.red));
+        }else if (mDataSet[position].rest<10){
+            op1.setTextColor(parent.getResources().getColor(R.color.orange));
+            op2.setTextColor(parent.getResources().getColor(R.color.orange));
+            op3.setTextColor(parent.getResources().getColor(R.color.orange));
+        }else {
+            op1.setTextColor(parent.getResources().getColor(R.color.black));
+            op2.setTextColor(parent.getResources().getColor(R.color.black));
+            op3.setTextColor(parent.getResources().getColor(R.color.black));
+        }
         viewHolder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
