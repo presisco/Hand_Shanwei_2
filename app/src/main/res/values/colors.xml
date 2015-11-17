@@ -4,4 +4,17 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="my">#00cfff</color>
+    <color name="bookSeatButton">#00cfff</color>
+
+    <color name="swipe_color_1">#B6DB49</color>
+    <color name="swipe_color_2">#99CC00</color>
+    <color name="swipe_color_3">#8ABD00</color>
+    <color name="swipe_color_4">#7CAF00</color>
+
+    <color name="book_seat_stripe_color">#FF0000</color>
+    <color name="search_book_stripe_color">#00FF00</color>
+    <color name="config_center_stripe_color">#0000FF</color>
+    <color name="book_seat_titile_color">#00CFFF</color>
+
+    <color name="cardview_picked_color">#AAAAAA</color>
 </resources>

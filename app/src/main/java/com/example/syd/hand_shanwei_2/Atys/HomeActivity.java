@@ -1,14 +1,20 @@
 package com.example.syd.hand_shanwei_2.Atys;
+
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -25,27 +31,73 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import Adapters.ViewAdapter;
-import Http_Utils.Get_Today_Seats;
-import Local_Utils.UserinfoUtils;
-import Service.MD5Tools;
-import Service.YuyueService;
-import Service.YuyueTools;
+import com.example.syd.hand_shanwei_2.Http_Utils.Get_Today_Seats;
+import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
+import com.example.syd.hand_shanwei_2.Service.MD5Tools;
+import com.example.syd.hand_shanwei_2.Service.YuyueService;
+import com.example.syd.hand_shanwei_2.Service.YuyueTools;
+import com.example.syd.hand_shanwei_2.ui_components.SlidingTabsColorsFragment;
 
 /**
  * Created by Admin on 2015/11/12.
  */
-public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener, ActionBar.TabListener, View.OnClickListener {
-    /*//登陆信息进行本地存储
-    SharedPreferences sharedPreferences;*/
-    //本地信息管理工具
+
+public class HomeActivity extends FragmentActivity {
+
     public static HttpClient client;
     private static MD5Tools md5Tools=new MD5Tools();
     private static YuyueTools yuyueTools=new YuyueTools();
     private YuyueService yuYueService=new YuyueService();
     UserinfoUtils userinfoUtils;
     ActionBar actionBar;
+    private  SlidingTabsColorsFragment mSlidingTabsHost;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.home);
+        if(savedInstanceState != null)
+            return;
+        mSlidingTabsHost=new SlidingTabsColorsFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.slidingtab_fragment, mSlidingTabsHost);
+        transaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        return super.onOptionsItemSelected(item);
+    }
+
+/*    @Override
+    protected void onActivityResult(int request_code,int result_code,Intent data)
+    {
+        super.onActivityResult(request_code, result_code, data);
+        Log.d("onActivityResult", "MainActivity");
+    }*/
+}
+
+/*
+public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener, ActionBar.TabListener, View.OnClickListener {
+    */
+/*//*
+/登陆信息进行本地存储
+    SharedPreferences sharedPreferences;*//*
+
+    //本地信息管理工具
+
     //存储屏幕高度和宽度
     int height,width;
     //存储三个tab
@@ -80,6 +132,8 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         actionBar.setDisplayShowCustomEnabled(true);
        // actionBar.setDisplayHomeAsUpEnabled(true);
         //actionBar.setIcon(R.drawable.welcome);
+        //btnlog= (Button) views.get(2).findViewById(R.id.btn_log_in_out);
+        //btnlog.setOnClickListener(this);
         //初始化座位数组
         allseats=new int[FLOORS];
         current_seats=new int[FLOORS];
@@ -87,8 +141,7 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         initViews();
         //获取屏幕宽高，计算各自的宽度
         //初始化tab_title
-        btnlog= (Button) views.get(2).findViewById(R.id.btn_log_in_out);
-        btnlog.setOnClickListener(this);
+        //initDots();
         for (int i = 0; i <3 ; i++) {
             actionBar.addTab(actionBar.newTab().setCustomView(tab_layout_id[i]).setTabListener(this));
         }
@@ -104,16 +157,19 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         //预约按钮事件
         btnorder_tomorrow= (Button) views.get(0).findViewById(R.id.order_tomorrow);
         btnorder_tomorrow.setOnClickListener(this);
+
     }
     //初始化tab_title
-    /*private void initDots() {
+    */
+/*private void initDots() {
         textViews=new TextView[views.size()];
         for (int i = 0; i <views.size() ; i++) {
             textViews[i]= (TextView) findViewById(ids[i]);
             textViews[i].setVisibility(View.VISIBLE);
             textViews[i].setOnClickListener(new MyOnClickListener(i));
         }
-    }*/
+    }*//*
+
     //初始化viewPager
     private void initViews() {
         LayoutInflater layoutInflater= LayoutInflater.from(this);
@@ -121,7 +177,6 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         views.add(layoutInflater.inflate(R.layout.tab01layout, null));
         views.add(layoutInflater.inflate(R.layout.tab02layout, null));
         views.add(layoutInflater.inflate(R.layout.tab03layout, null));
-        //System.out.println("11111111111111111111111111111"+views.size());
         ViewAdapter viewAdapter=new ViewAdapter(views);
         viewPager= (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(viewAdapter);
@@ -214,50 +269,58 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
     public void onPageScrollStateChanged(int state) {
     }
 
-    /**
+    */
+/**
      * Called when a tab enters the selected state.
      *
      * @param tab The tab that was selected
      * @param ft  A {@link FragmentTransaction} for queuing fragment operations to execute
      *            during a tab switch. The previous tab's unselect and this tab's select will be
      *            executed in a single transaction. This FragmentTransaction does not support
-     */
+     *//*
+
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
             viewPager.setCurrentItem(tab.getPosition());
     }
 
-    /**
+    */
+/**
      * Called when a tab exits the selected state.
      *
      * @param tab The tab that was unselected
      * @param ft  A {@link FragmentTransaction} for queuing fragment operations to execute
      *            during a tab switch. This tab's unselect and the newly selected tab's select
      *            will be executed in a single transaction. This FragmentTransaction does not
-     */
+     *//*
+
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
 
-    /**
+    */
+/**
      * Called when a tab that is already selected is chosen again by the user.
      * Some applications may use this action to return to the top level of a category.
      *
      * @param tab The tab that was reselected.
      * @param ft  A {@link FragmentTransaction} for queuing fragment operations to execute
      *            once this method returns. This FragmentTransaction does not support
-     */
+     *//*
+
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
 
-    /**
+    */
+/**
      * 按钮点击事件处理
      *
      * @param v The view that was clicked.
-     */
+     *//*
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -320,3 +383,4 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
     }
     long pre_click_time;
 }
+*/

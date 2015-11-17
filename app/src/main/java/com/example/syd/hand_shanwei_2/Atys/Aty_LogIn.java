@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.example.syd.hand_shanwei_2.R;
 
-import Http_Utils.Login_Util;
-import Local_Utils.UserinfoUtils;
+import com.example.syd.hand_shanwei_2.Http_Utils.Login_Util;
+import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
 
 /**
  * Created by syd on 2015/11/15.
@@ -94,8 +94,8 @@ public class Aty_LogIn extends AppCompatActivity {
                             startActivity(new Intent(Aty_LogIn.this, Oder_Tomorrow_Seat_Home.class));
                             finish();
                         } else if (from == 0) {
-                            HomeActivity homeActivity = new HomeActivity();
-                            homeActivity.viewPager.setCurrentItem(2);
+//                            HomeActivity homeActivity = new HomeActivity();
+//                            homeActivity.viewPager.setCurrentItem(2);
                             startActivity(new Intent(Aty_LogIn.this, HomeActivity.class));
                             finish();
                         }

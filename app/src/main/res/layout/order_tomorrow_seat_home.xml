@@ -12,7 +12,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:text="@string/order_seat_tomorrow"
+            android:text="@string/book_seats_title"
             android:layout_height="wrap_content" />
         <Button
             android:layout_width="40dp"

@@ -2,19 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
-   <GridView
-       android:layout_width="match_parent"
-       android:layout_height="450dp"
-       android:id="@+id/gridview"
-       android:numColumns="3"
-       android:gravity="center"
-       >
-   </GridView>
-    <Button
-        android:layout_width="fill_parent"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/order_tomorrow"
-        android:text="@string/order_seat_tomorrow"
-        android:background="#00cfff"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView"
+        android:layout_weight="0.001"
+        android:textSize="@dimen/medium_text" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/curFloorsSwipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/curFloorsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookRandomSeatButton"
+        android:text="@string/rand_book_seat"
+        android:background="@color/bookSeatButton"
+        android:layout_weight="1"
+        android:onClick="randBookSeat" />
 </LinearLayout>

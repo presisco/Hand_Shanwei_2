@@ -22,6 +22,7 @@
         <activity android:name=".Atys.Oder_Tomorrow_Seat_Home">
         </activity>
         <activity android:name=".Atys.Aty_LogIn"/>
+        <activity android:name=".BookSeats.SelectSeatActivity"/>
     </application>
 
 </manifest>
