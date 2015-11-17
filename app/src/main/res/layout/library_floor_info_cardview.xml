@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.FloorInfo.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/floorInfoCardView">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1楼"
+            android:id="@+id/floorNameTextView"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:textSize="@dimen/small_text"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="总共100"
+            android:id="@+id/floorCapTextView"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentEnd="false"
+            android:textSize="@dimen/very_small_text"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/floorNameTextView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="剩余10"
+            android:id="@+id/floorCurrentTextView"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="@dimen/very_small_text"
+            android:layout_alignParentBottom="false"
+            android:layout_below="@+id/floorNameTextView" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

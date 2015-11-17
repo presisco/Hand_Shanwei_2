@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:id="@+id/btnback"
+    android:background="@drawable/back"
+    android:onClick="onBack" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/book_seat_titile_color"
+        android:id="@+id/bookSeatTitleFrameLayout">
+        <TextView
+            android:layout_width="wrap_content"
+             android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="@string/book_seats_title"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_weight="2"
+        android:text="Date:0000-00-00"
+        android:textSize="20sp"
+        android:paddingLeft="10dp"
+        android:id="@+id/bookDateTextView"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bookSeatTitleFrameLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/select_floor"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:id="@+id/floorSpinnerDescripTextView"
+        android:layout_below="@+id/bookDateTextView"
+        android:layout_marginLeft="10dp" />
+
+    <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/floorSpinner"
+        android:popupBackground="#00cfff"
+        android:layout_toEndOf="@id/floorSpinnerDescripTextView"
+        android:layout_toRightOf="@id/floorSpinnerDescripTextView"
+        android:layout_alignTop="@+id/floorSpinnerDescripTextView"
+        android:layout_marginRight="10dp">
+
+    </Spinner>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view"
+        android:layout_below="@+id/floorSpinner"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/noselectFloortv"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:textAlignment="center"
+    android:textColor="#ff0000"
+        android:id="@+id/noselectFloortv"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="选择不限楼层，系统将随机为您\n预约座位，实现一键预约"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btn_order_seats"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+    android:layout_width="100dp"
+    android:textSize="15sp"
+    android:id="@+id/btn_order_seats"
+    android:layout_height="wrap_content"
+    android:background="@color/my"
+    android:text="预约"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="false"
+        android:layout_marginBottom="10dp" />
+
+
+</RelativeLayout>
