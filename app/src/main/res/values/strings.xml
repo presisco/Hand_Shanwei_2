@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">掌动山威</string>
     <string name="app_name_eng">hand_shanwei</string>
-    <string name="rand_book_seat">随机预约明天座位</string>
+    <string name="onkey_book_seat">一键预约明天座位</string>
     <string name="order_time">预约日期</string>
     <string name="select_floor">选择楼层</string>
     <string name="login">登录</string>
@@ -13,5 +13,6 @@
     <string name="config_center_title">个人中心</string>
 	<string name="order_fail">预约失败</string>
     <string name="order_success">预约成功</string>
+    <string name="bookseathometip">提示:点击相应楼层进入精确预约界面\n想要更快预约到座位可以选择一键预约哦</string>
 
 </resources>

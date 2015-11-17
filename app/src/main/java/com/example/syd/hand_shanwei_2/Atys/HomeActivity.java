@@ -1,41 +1,14 @@
 package com.example.syd.hand_shanwei_2.Atys;
 
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.syd.hand_shanwei_2.R;
 
-import org.apache.http.client.HttpClient;
-
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import com.example.syd.hand_shanwei_2.Http_Utils.Get_Today_Seats;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
-import com.example.syd.hand_shanwei_2.Service.MD5Tools;
-import com.example.syd.hand_shanwei_2.Service.YuyueService;
-import com.example.syd.hand_shanwei_2.Service.YuyueTools;
 import com.example.syd.hand_shanwei_2.ui_components.SlidingTabsColorsFragment;
 
 /**
@@ -44,18 +17,15 @@ import com.example.syd.hand_shanwei_2.ui_components.SlidingTabsColorsFragment;
 
 public class HomeActivity extends FragmentActivity {
 
-    public static HttpClient client;
-    private static MD5Tools md5Tools=new MD5Tools();
-    private static YuyueTools yuyueTools=new YuyueTools();
-    private YuyueService yuYueService=new YuyueService();
     UserinfoUtils userinfoUtils;
-    ActionBar actionBar;
+    //android.app.ActionBar actionBar;
     private  SlidingTabsColorsFragment mSlidingTabsHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        //getActionBar().setTitle(getResources().getString(R.string.app_name));
         if(savedInstanceState != null)
             return;
         mSlidingTabsHost=new SlidingTabsColorsFragment();
@@ -63,7 +33,6 @@ public class HomeActivity extends FragmentActivity {
         transaction.replace(R.id.slidingtab_fragment, mSlidingTabsHost);
         transaction.commit();
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -1,7 +1,6 @@
 package com.example.syd.hand_shanwei_2.BookSeats;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.syd.hand_shanwei_2.R;
-
 import com.example.syd.hand_shanwei_2.Model.FloorInfo;
-import com.example.syd.hand_shanwei_2.Model.SeatInfo;
+import com.example.syd.hand_shanwei_2.R;
 
 /**
  * Created by presisco on 2015/11/16.
@@ -21,9 +18,9 @@ import com.example.syd.hand_shanwei_2.Model.SeatInfo;
 public class SeatInfoAdapter extends RecyclerView.Adapter<SeatInfoAdapter.ViewHolder> {
     private static final String TAG = "FloorInfoAdapter";
     private Context parent;
-    private SeatInfo[] mDataSet;
+    private FloorInfo[] mDataSet;
     private int selected=-1;
-    private SeatInfo mSelectedSeat;
+    private FloorInfo mSelectedSeat;
     private CardView curSelected;
 // BEGIN_INCLUDE(recyclerViewSampleViewHolder)
 
@@ -49,7 +46,7 @@ public class SeatInfoAdapter extends RecyclerView.Adapter<SeatInfoAdapter.ViewHo
      *
      * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
      */
-    public SeatInfoAdapter(SeatInfo[] dataSet,Context context) {
+    public SeatInfoAdapter(FloorInfo[] dataSet,Context context) {
         parent=context;
         mDataSet = dataSet;
     }
@@ -76,7 +73,7 @@ public class SeatInfoAdapter extends RecyclerView.Adapter<SeatInfoAdapter.ViewHo
         // with that element
         final CardView cardView=viewHolder.getCardView();
         TextView op = (TextView) cardView.findViewById(R.id.seatIdTextView);
-        op.setText(mDataSet[position].mSeatID);
+        op.setText(mDataSet[position].layer);
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +96,7 @@ public class SeatInfoAdapter extends RecyclerView.Adapter<SeatInfoAdapter.ViewHo
         return mDataSet.length;
     }
 
-    public SeatInfo getSelectedSeat()
+    public FloorInfo getSelectedSeat()
     {
         return mSelectedSeat;
     }

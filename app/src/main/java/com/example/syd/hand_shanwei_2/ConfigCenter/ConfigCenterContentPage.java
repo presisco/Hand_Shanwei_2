@@ -67,10 +67,8 @@ public class ConfigCenterContentPage extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab03layout, container, false);
-
         return view;
     }
-
     /**
      * 界面绘制完毕，在super.onViewCreated()后加入代码
      * @param view
@@ -79,8 +77,8 @@ public class ConfigCenterContentPage extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
 
+    }
     @Override
     public void onResume() {
         super.onResume();

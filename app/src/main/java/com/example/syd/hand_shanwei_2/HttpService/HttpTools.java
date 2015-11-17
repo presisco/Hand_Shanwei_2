@@ -1,4 +1,4 @@
-package com.example.syd.hand_shanwei_2.Service;
+package com.example.syd.hand_shanwei_2.HttpService;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -6,16 +6,20 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by syd on 2015/11/16.
  */
 public class HttpTools {
-    public static String getYuYueInfoPost(String path, HttpClient client, List<NameValuePair> postParameters)
+    public static String PostHTTPRequest(String path, HttpClient client, List<NameValuePair> postParameters)
     {
         try {
             HttpPost request = new HttpPost(path); // 构建post路径
@@ -37,7 +41,7 @@ public class HttpTools {
      * @param client
      * @return
      */
-    public static String getYuYueInfoGet(String path, HttpClient client)
+    public static String GetHTTPRequest(String path, HttpClient client)
     {
         try {
             HttpGet sitRequest = new HttpGet(new URI(path)); // 构建get路径
@@ -54,5 +58,27 @@ public class HttpTools {
         }
 
         return null;
+    }
+    public static String getContent(String url, Map<String, String> param) {
+        String result = "";
+        String paramStr = "";
+        for (String key : param.keySet()) {
+            try {
+                paramStr += key + "="
+                        + URLEncoder.encode(param.get(key), "UTF-8") + "&";
+            } catch (UnsupportedEncodingException e1) {
+                e1.printStackTrace();
+            }
+        }
+        HttpGet getMethod = new HttpGet(url + "?" + paramStr);
+        HttpClient httpClient = new DefaultHttpClient();
+        try {
+            HttpResponse response = httpClient.execute(getMethod);
+            if (response.getStatusLine().getStatusCode() == 200)
+                result = EntityUtils.toString(response.getEntity(), "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

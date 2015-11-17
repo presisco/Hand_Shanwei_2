@@ -1,52 +1,37 @@
 package com.example.syd.hand_shanwei_2.BookSeats;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.LoaderManager;
-import android.content.AsyncQueryHandler;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.CursorLoader;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.syd.hand_shanwei_2.HttpService.OrderSeatService.OrderSeatService;
+import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
 import com.example.syd.hand_shanwei_2.R;
 import com.example.syd.hand_shanwei_2.Model.FloorInfo;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Presisco on 2015/9/28.
  */
 public class BookSeatsContentPage extends Fragment{
-
+    private static boolean isfirstin=true;
     private static final String LOG_TAG = BookSeatsContentPage.class.getSimpleName();
     private static final Integer COLUMN_COUNT=3;
+    private static  List<FloorInfo> floorInfos;
     /**
      * The {@link android.support.v4.widget.SwipeRefreshLayout} that detects swipe gestures and
      * triggers callbacks in the app.
@@ -66,6 +51,7 @@ public class BookSeatsContentPage extends Fragment{
      */
     public static Fragment newInstance() {
         BookSeatsContentPage fragment = new BookSeatsContentPage();
+
         return fragment;
     }
 
@@ -73,14 +59,17 @@ public class BookSeatsContentPage extends Fragment{
 //    public void onCreate(Bundle savedInstanceState) {
 //
 //    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab01layout, container, false);
-
         //Test Data Gen
-        genTestData();
+         genTestData();
+        if (isfirstin){
+            //mDataSet=new FloorInfo[12];
 
+            initiateRefresh();
+
+        }
         // Retrieve the SwipeRefreshLayout and ListView instances
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.curFloorsSwipeRefresh);
 
@@ -103,7 +92,7 @@ public class BookSeatsContentPage extends Fragment{
         // Set CustomAdapter as the adapter for RecyclerView.
         mFloorInfoRecyclerView.setAdapter(mFloorInfoAdapter);
         // END_INCLUDE(initializeRecyclerView)
-        
+
         return view;
     }
 
@@ -119,6 +108,7 @@ public class BookSeatsContentPage extends Fragment{
          * refreshes the content. Call the same method in response to the Refresh action from the
          * action bar.
          */
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -133,15 +123,17 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
 
     private void initiateRefresh() {
-        Log.i(LOG_TAG, "initiateRefresh");
+        //Log.i(LOG_TAG, "initiateRefresh");
 
         /**
          * Execute the background task, which uses {@link android.os.AsyncTask} to load the data.
          */
+        Toast.makeText(getActivity(),"正在加载座位信息...",Toast.LENGTH_SHORT).show();
         new DummyBackgroundTask().execute();
     }
     // END_INCLUDE (initiate_refresh)
@@ -152,10 +144,11 @@ public class BookSeatsContentPage extends Fragment{
      * ListAdapter and turns off the progress bar.
      */
     private void onRefreshComplete() {
-        Log.i(LOG_TAG, "onRefreshComplete");
+       // Log.i(LOG_TAG, "onRefreshComplete");
 
+        Toast.makeText(getActivity(),"加载完成",Toast.LENGTH_SHORT).show();
         // Remove all items from the ListAdapter, and then replace them with the new items
-        mDataSet=null;
+       // mDataSet=null;
         genTestData();
 
         // Stop the refreshing indicator
@@ -172,13 +165,40 @@ public class BookSeatsContentPage extends Fragment{
 
         @Override
         protected Integer doInBackground(Void... params) {
-            // Sleep for a small amount of time to simulate a background-task
+
+            OrderSeatService yuyueService=new OrderSeatService();
+            // 获取当前日期+1
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            Date beginDate = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(beginDate);
+            calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
+            String date = format.format(calendar.getTime());
             try {
-                Thread.sleep(TASK_DURATION);
-            } catch (InterruptedException e) {
+                //OrderSeatService.testUserInfoIsTrue("201100800169", "011796");
+                //Date date=new Date(2015,11,18);
+               /* OrderSeatService.getYuYueInfo(HttpConnectionService.getHttpClient()
+                        , "4", "2015/11/17");*/
+                // 发送get请求
+              /*  HttpTools.GetHTTPRequest(
+                        "http://yuyue.juneberry.cn/BookSeat/BookSeatListForm.aspx",
+                        HttpConnectionService.getHttpClient());
+                OrderSeatService.subYuYueInfo(HttpConnectionService.getHttpClient()
+                        ,"000223","001",date);*/
+                UserinfoUtils userinfoUtils=new UserinfoUtils(getActivity());
+                //System.out.println(userinfoUtils.get_LastId()+"==="+userinfoUtils.get_LastPassword());
+                floorInfos=OrderSeatService.getFloorInfo(userinfoUtils.get_LastId(),userinfoUtils.get_LastPassword());
+                isfirstin=false;
+               /* for (int j=0;j<12;j++){
+                    mDataSet[j]=new FloorInfo();
+                    mDataSet[j].total=floorInfos.get(j).total;
+                    mDataSet[j].rest=floorInfos.get(j).rest;
+                    mDataSet[j].layer=floorInfos.get(j).layer;
+                    System.out.println(mDataSet[j].total+"=="+mDataSet[j].layer+"=="+mDataSet[j].rest);
+                }*/
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
             // Return a new random list of cheeses
             return 0;
         }
@@ -186,7 +206,6 @@ public class BookSeatsContentPage extends Fragment{
         @Override
         protected void onPostExecute(Integer result) {
             super.onPostExecute(result);
-
             // Tell the Fragment that the refresh has completed
             onRefreshComplete();
         }
@@ -194,13 +213,28 @@ public class BookSeatsContentPage extends Fragment{
     }
 
     private void genTestData() {
-        mDataSet=new FloorInfo[12];
-        for(int i=0;i<12;++i)
-        {
-            mDataSet[i]=new FloorInfo();
-            mDataSet[i].mFloorName=i+" Fl";
-            mDataSet[i].mCap=100;
-            mDataSet[i].mCurrent=(int)Math.random()*100;
+        this.mDataSet =new FloorInfo[12];
+        if (isfirstin) {
+            for (int i = 0; i < 12;i++) {
+               mDataSet[i] = new FloorInfo();
+                mDataSet[i].layer = i + " Fl";
+                mDataSet[i].total = 100;
+                mDataSet[i].rest = (int) Math.random() * 100;
+            }
+        }else {
+            for (int i = 0; i < 12; i++) {
+                //mDataSet[i] = new FloorInfo();
+                mDataSet[i].layer ="1";
+                mDataSet[i].total =2;
+                mDataSet[i].rest =3;
+            }
         }
     }
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+
+        }
+    };
+    //private static int i=0;
 }

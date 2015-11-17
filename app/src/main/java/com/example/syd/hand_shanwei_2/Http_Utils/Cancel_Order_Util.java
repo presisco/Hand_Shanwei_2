@@ -8,8 +8,8 @@ import com.example.syd.hand_shanwei_2.Atys.HomeActivity;
 
 import org.apache.http.client.HttpClient;
 
+import com.example.syd.hand_shanwei_2.HttpService.OrderSeatService.OrderSeatService;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
-import com.example.syd.hand_shanwei_2.Service.YuyueService;
 
 /**
  * Created by syd on 2015/11/16.
@@ -51,12 +51,10 @@ public class Cancel_Order_Util {
             if (!userinfoUtils.has_Order_History()){//之前没有预约记录
                 return NO_ORDER_HISTORY;
             }else {
-
                  new Thread(){
                 @Override
                 public void run() {
-                    YuyueService yuyueService=new YuyueService();
-                    boolean b=yuyueService.Cancel(HomeActivity.client);
+                    boolean b= OrderSeatService.Cancel(OrderSeatService.coreClient);
                     if (b){//取消成功
                         handler.sendEmptyMessage(CANCEL_SUCCESS);
                     }else {//取消失败
