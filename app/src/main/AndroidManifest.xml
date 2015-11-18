@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".Atys.Aty_LogIn"/>
         <activity android:name=".BookSeats.SelectSeatActivity"/>
+        <activity android:name=".Atys.Order_Seat_Process"/>
     </application>
 
 </manifest>

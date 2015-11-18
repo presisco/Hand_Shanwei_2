@@ -17,4 +17,5 @@
     <color name="book_seat_titile_color">#00CFFF</color>
     <color name="black">#000000</color>
     <color name="cardview_picked_color">#AAAAAA</color>
+    <color name="green">#00ff00</color>
 </resources>

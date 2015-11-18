@@ -14,5 +14,8 @@
 	<string name="order_fail">预约失败</string>
     <string name="order_success">预约成功</string>
     <string name="bookseathometip">提示:点击相应楼层进入精确预约界面\n想要更快预约到座位可以选择一键预约哦</string>
-
+    <string name="order_empty_tip">预约失败，再试一下吧</string>
+    <string name="order_hashistory_tip">您已存在有效的预约记录，\n不能再次预约，请到个人中心查看</string>
+    <string name="ordering">正在预约....</string>
+    <string name="order_connection_out_tip">链接超时，请重试</string>
 </resources>

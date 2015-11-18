@@ -1,5 +1,6 @@
 package com.example.syd.hand_shanwei_2.BookSeats;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -12,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.syd.hand_shanwei_2.Atys.Order_Seat_Process;
 import com.example.syd.hand_shanwei_2.HttpService.OrderSeatService.OrderSeatService;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
 import com.example.syd.hand_shanwei_2.R;
@@ -32,6 +35,7 @@ public class BookSeatsContentPage extends Fragment{
     private static final String LOG_TAG = BookSeatsContentPage.class.getSimpleName();
     private static final Integer COLUMN_COUNT=3;
     private static  List<FloorInfo> floorInfos;
+    private Button btn_one_key_order;
     /**
      * The {@link android.support.v4.widget.SwipeRefreshLayout} that detects swipe gestures and
      * triggers callbacks in the app.
@@ -62,9 +66,16 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab01layout, container, false);
+        btn_one_key_order = (Button) view.findViewById(R.id.bookRandomSeatButton);
+        btn_one_key_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), Order_Seat_Process.class));
+            }
+        });
         //Test Data Gen
-        mDataSet=new FloorInfo[0];
-        new DummyBackgroundTask().execute();
+        /*mDataSet=new FloorInfo[0];
+        new DummyBackgroundTask().execute();*/
         genTestData();
         if (isfirstin){
             //mDataSet=new FloorInfo[12];
@@ -167,7 +178,6 @@ public class BookSeatsContentPage extends Fragment{
         @Override
         protected Integer doInBackground(Void... params) {
 
-            OrderSeatService yuyueService=new OrderSeatService();
             // 获取当前日期+1
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             Date beginDate = new Date();
@@ -226,11 +236,6 @@ public class BookSeatsContentPage extends Fragment{
             }
         }
     }
-    Handler handler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
 
-        }
-    };
     //private static int i=0;
 }
