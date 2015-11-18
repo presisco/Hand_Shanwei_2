@@ -19,8 +19,9 @@
         <AutoCompleteTextView
             android:layout_width="fill_parent"
             android:minWidth="300dp"
-            android:hint="输入书名或作者名  "
-            android:focusableInTouchMode="false"
+            android:hint="@string/search_hint"
+            android:textAlignment="center"
+            android:focusableInTouchMode="true"
             android:id="@+id/etsearchbook"
             android:layout_height="wrap_content"
             />

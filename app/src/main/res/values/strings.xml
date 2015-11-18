@@ -18,4 +18,9 @@
     <string name="order_hashistory_tip">您已存在有效的预约记录，\n不能再次预约，请到个人中心查看</string>
     <string name="ordering">正在预约....</string>
     <string name="order_connection_out_tip">链接超时，请重试</string>
+    <string name="search_hint">输入书名或作者名</string>
+    <string name="searchtwice">二次搜索</string>
+    <string name="cancel">取消</string>
+    <string name="twicesearchtip">在搜索框中输入内容，进行二次搜索</string>
+    <string name="twicesearch">二次搜索</string>
 </resources>

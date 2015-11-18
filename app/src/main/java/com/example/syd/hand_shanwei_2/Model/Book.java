@@ -22,7 +22,6 @@ public class Book {
     public Book() {
         super();
     }
-
     public String getMarcno() {
         return marcno;
     }
