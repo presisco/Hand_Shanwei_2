@@ -46,6 +46,5 @@
         android:id="@+id/bookRandomSeatButton"
         android:text="@string/onkey_book_seat"
         android:background="@color/bookSeatButton"
-        android:layout_weight="1"
-        android:onClick="randBookSeat" />
+        android:layout_weight="1" />
 </LinearLayout>

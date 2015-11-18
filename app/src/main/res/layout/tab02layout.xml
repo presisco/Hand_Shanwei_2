@@ -2,10 +2,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <SearchView
-        android:layout_width="200dp"
-        android:background="#00f0f0"
-        android:queryHint="请输入书名或作者明"
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        >
+
+       <!-- <EditText
+            android:id="@+id/etsearchbook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="250dp"
+            android:textAlignment="center"
+            android:hint="输入书名或作者名"/>-->
+        <AutoCompleteTextView
+            android:layout_width="fill_parent"
+            android:minWidth="300dp"
+            android:hint="输入书名或作者名  "
+            android:focusableInTouchMode="false"
+            android:id="@+id/etsearchbook"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp">
+ <LinearLayout
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content">
+ </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
         android:layout_height="wrap_content">
-    </SearchView>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="fill_parent">
+        </LinearLayout>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchbyauthor"
+            android:layout_weight="3"
+            android:text="按作者搜索"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="fill_parent">
+        </LinearLayout>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:id="@+id/searchbybookname"
+            android:text="按书名搜索"/>
+        android:text="按作者搜索"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="fill_parent">
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

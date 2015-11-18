@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.syd.hand_shanwei_2.Atys.Order_Seat_Process;
 import com.example.syd.hand_shanwei_2.HttpService.OrderSeatService.OrderSeatService;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
 import com.example.syd.hand_shanwei_2.R;
@@ -35,15 +34,14 @@ public class BookSeatsContentPage extends Fragment{
     private static final String LOG_TAG = BookSeatsContentPage.class.getSimpleName();
     private static final Integer COLUMN_COUNT=3;
     private static  List<FloorInfo> floorInfos;
-    private Button btn_one_key_order;
     /**
-     * The {@link android.support.v4.widget.SwipeRefreshLayout} that detects swipe gestures and
+     * The {@link SwipeRefreshLayout} that detects swipe gestures and
      * triggers callbacks in the app.
      */
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     /**
-     * The {@link android.support.v7.widget.RecyclerView} that displays the content that should be refreshed.
+     * The {@link RecyclerView} that displays the content that should be refreshed.
      */
     private RecyclerView mFloorInfoRecyclerView;
     private FloorInfoAdapter mFloorInfoAdapter;
@@ -66,17 +64,10 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab01layout, container, false);
-        btn_one_key_order = (Button) view.findViewById(R.id.bookRandomSeatButton);
-        btn_one_key_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), Order_Seat_Process.class));
-            }
-        });
         //Test Data Gen
-        /*mDataSet=new FloorInfo[0];
-        new DummyBackgroundTask().execute();*/
-        genTestData();
+        mDataSet=new FloorInfo[0];
+        new DummyBackgroundTask().execute();
+
         if (isfirstin){
             //mDataSet=new FloorInfo[12];
             initiateRefresh();
@@ -103,6 +94,17 @@ public class BookSeatsContentPage extends Fragment{
         // Set CustomAdapter as the adapter for RecyclerView.
         mFloorInfoRecyclerView.setAdapter(mFloorInfoAdapter);
         // END_INCLUDE(initializeRecyclerView)
+
+        //设置随机预定按钮监听
+        Button randomBook=(Button)view.findViewById(R.id.bookRandomSeatButton);
+        randomBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newIntent=new Intent(getContext(),SelectSeatActivity.class);
+                newIntent.putExtra("random",true);
+                startActivity(newIntent);
+            }
+        });
 
         return view;
     }
@@ -142,7 +144,7 @@ public class BookSeatsContentPage extends Fragment{
         //Log.i(LOG_TAG, "initiateRefresh");
 
         /**
-         * Execute the background task, which uses {@link android.os.AsyncTask} to load the data.
+         * Execute the background task, which uses {@link AsyncTask} to load the data.
          */
         Toast.makeText(getActivity(),"正在加载座位信息...",Toast.LENGTH_SHORT).show();
         new DummyBackgroundTask().execute();
@@ -178,6 +180,7 @@ public class BookSeatsContentPage extends Fragment{
         @Override
         protected Integer doInBackground(Void... params) {
 
+            OrderSeatService yuyueService=new OrderSeatService();
             // 获取当前日期+1
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             Date beginDate = new Date();
@@ -236,6 +239,11 @@ public class BookSeatsContentPage extends Fragment{
             }
         }
     }
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
 
+        }
+    };
     //private static int i=0;
 }

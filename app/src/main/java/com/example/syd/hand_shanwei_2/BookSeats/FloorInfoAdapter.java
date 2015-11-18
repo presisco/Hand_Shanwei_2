@@ -75,11 +75,11 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        TextView op1 = (TextView) viewHolder.getCardView().findViewById(R.id.floorNameTextView);
+        TextView op1 = (TextView) viewHolder.getCardView().findViewById(R.id.bookNameTextView);
         op1.setText(mDataSet[position].layer);
-        TextView op2 = (TextView) viewHolder.getCardView().findViewById(R.id.floorCapTextView);
+        TextView op2 = (TextView) viewHolder.getCardView().findViewById(R.id.bookIdTextView);
         op2.setText(parent.getResources().getString(R.string.floor_info_cap)+mDataSet[position].total);
-        TextView op3 = (TextView) viewHolder.getCardView().findViewById(R.id.floorCurrentTextView);
+        TextView op3 = (TextView) viewHolder.getCardView().findViewById(R.id.bookCountTextView);
         op3.setText(parent.getResources().getString(R.string.floor_info_cur) + mDataSet[position].rest);
         if (mDataSet[position].rest<=0)
         //viewHolder.getCardView().setCardBackgroundColor(R.color.red);
@@ -101,7 +101,7 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
             public void onClick(View v) {
                 Intent mSelectSeatIntent = new Intent(parent, SelectSeatActivity.class);
                 mSelectSeatIntent.putExtra("random", false);
-                mSelectSeatIntent.putExtra("floorid", mDataSet[position].layer);
+                mSelectSeatIntent.putExtra("floorname", mDataSet[position].layer);
                 parent.startActivity(mSelectSeatIntent);
                 Log.d(TAG, "Element " + position + " clicked.");
             }

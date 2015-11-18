@@ -14,14 +14,13 @@ import com.example.syd.hand_shanwei_2.ui_components.SlidingTabsColorsFragment;
 
 import java.util.Date;
 
-/**
- * Created by Admin on 2015/11/12.
+/**s
+ * Created by syd on 2015/11/12.
  */
 
 public class HomeActivity extends FragmentActivity {
-
-    UserinfoUtils userinfoUtils;
-    //android.app.ActionBar actionBar;
+    long pre_click_time;
+    android.app.ActionBar actionBar;
     private  SlidingTabsColorsFragment mSlidingTabsHost;
 
     @Override
@@ -42,19 +41,6 @@ public class HomeActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    //实现按两次退出程序
-    @Override
-    public void onBackPressed() {
-        long click_time=new Date().getTime();
-        if (click_time-pre_click_time>2000){
-            Toast.makeText(HomeActivity.this, "再按一次退出程序！", Toast.LENGTH_SHORT).show();
-            //更新时间
-            pre_click_time=click_time;
-            return;
-        }
-        super.onBackPressed();
-    }
-    long pre_click_time;
 
 
     @Override
@@ -64,6 +50,19 @@ public class HomeActivity extends FragmentActivity {
         // as you specify a parent activity in AndroidManifest.xml.
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //实现按两次退出程序
+    @Override
+    public void onBackPressed() {
+        long click_time=new Date().getTime();
+        if (click_time-pre_click_time>2000){
+            Toast.makeText(HomeActivity.this,"再按一次退出程序！", Toast.LENGTH_SHORT).show();
+            //更新时间
+            pre_click_time=click_time;
+            return;
+        }
+        super.onBackPressed();
     }
 
 /*    @Override
@@ -367,4 +366,5 @@ public class HomeActivity extends ActionBarActivity implements ViewPager.OnPageC
         super.onBackPressed();
     }
     long pre_click_time;
-}*/
+}
+*/
