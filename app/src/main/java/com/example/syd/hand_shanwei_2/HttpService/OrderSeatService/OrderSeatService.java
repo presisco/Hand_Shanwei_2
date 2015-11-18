@@ -179,7 +179,6 @@ public class OrderSeatService extends Service{
         // 测试，他妈的座位都被抢光了。
         // room = "103";
         List<String> list =getYuYueInfo("000" + room, date); // 获取该房间的列表
-
         if (0 == list.size()) {
             // 没有可用座位
             return "empty";
@@ -208,10 +207,16 @@ public class OrderSeatService extends Service{
         }
 
     }
+
     /**
      * 取消功能
+     * 成功返回success
+     * empty代表在别处已经取消
+     * error代表网络错误
      */
-    public static boolean Cancel(HttpClient client) {
+
+    public static String Cancel(HttpClient client) {
+
         List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
         // 构建实体数据
         postParameters.add(new BasicNameValuePair("subCmd", ""));
@@ -234,13 +239,16 @@ public class OrderSeatService extends Service{
                 postParameters);
         // System.out.println(s);
         // 获取subBookNo
+        if(s==null||s.equals("")){
+            return "error";
+        }
         int start = s.indexOf("(&apos;") + 7;
         int end = s.indexOf("&apos;)");
         if (start <= 6 || end <= 0 || start > s.length() || end > s.length()) {
-            return false;
+            return "empty";
         }
         String subBookNo = s.substring(start, end);
-        System.out.print("----"+subBookNo+"----");
+        System.out.print("----" + subBookNo + "----");
         postParameters.set(0, new BasicNameValuePair("subCmd", "cancel"));
         postParameters.set(1, new BasicNameValuePair("subBookNo", subBookNo));
         postParameters
@@ -257,10 +265,13 @@ public class OrderSeatService extends Service{
         s = HttpTools.PostHTTPRequest(
                 "http://yuyue.juneberry.cn/UserInfos/QueryLogs.aspx", client,
                 postParameters);
+        if(s==null||s.equals("")){
+            return "error";
+        }
         if (s.contains("alert('成功取消预约！')"))
-            return true;
+            return "success";
         else
-            return false;
+            return "empty";
     }
     /**
      * 解析指定楼层的座位信息获得座位
@@ -358,27 +369,18 @@ public class OrderSeatService extends Service{
         // 发送get请求
         String reqUrl = "http://yuyue.juneberry.cn/BookSeat/BookSeatMessage.aspx?seatNo=" + room + sitNo + "&seatShortNo=" + sitNo + "&roomNo=" + room + "&date=" + date;
         String s = HttpTools.GetHTTPRequest(reqUrl, client);
-        Log.i("bacground","精确预6666666666666666666666666");
-        Log.i("bacground",s);
-
         //System.out.println("s:" + s);
-
         // 需要解析出__EVENTVALIDATION和__VIEWSTATE字段
         String []strs = parseEandVAttri(s).split(",");
-        Log.i("bacground","精确预777777777777777777777777");
-
         List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 
         // 构建实体数据
         postParameters.add(new BasicNameValuePair("subCmd", "query"));
         postParameters.add(new BasicNameValuePair("__EVENTVALIDATION", strs[1]));
         postParameters.add(new BasicNameValuePair("__VIEWSTATE", strs[0]));
-        Log.i("bacground", "精确预88888888888888888");
-
+        //Log.i("bac",strs.toString()+"---------------");
         // 发送post请求
         String res = HttpTools.PostHTTPRequest(reqUrl, client, postParameters);
-        System.out.println("subYuYueInfo返回结果：\n" + res);
-
         return res;
     }
     /**

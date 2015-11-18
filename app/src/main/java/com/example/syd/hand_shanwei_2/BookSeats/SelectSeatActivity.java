@@ -49,6 +49,8 @@ public class SelectSeatActivity extends Activity{
     public static final String ORDER_SITNUM ="order_sitNum";
     public static final String ORDER_ROOM ="order_room";
     public static final String ORDER_DATE ="order_date";
+    public static  String room;
+    public static  String sitNum;
     //存储日期
     String mBookDate;
     //Spinner下拉选项

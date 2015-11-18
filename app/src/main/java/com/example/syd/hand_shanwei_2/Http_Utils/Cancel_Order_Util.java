@@ -22,6 +22,7 @@ public class Cancel_Order_Util {
     public static final int NO_ORDER_HISTORY=0;//之前没有过预约
     public static final int CANCEL_FAIL=-1;//之前有过预约,但是解约失败
     public static final int CANCEL_SUCCESS=1;//之前有过预约,解约成功
+    private static final int HAS_CANCED =2;//之前有过预约,已经在别处取消
     //是否取消成功
     private boolean isCancelSuccess=false;
     private Handler handler;
@@ -40,6 +41,9 @@ public class Cancel_Order_Util {
                      case CANCEL_SUCCESS:
                          res=1;
                          break;
+                     case HAS_CANCED:
+                         res=2;
+                         break;
                  }
              }
          };
@@ -54,10 +58,12 @@ public class Cancel_Order_Util {
                  new Thread(){
                 @Override
                 public void run() {
-                    boolean b= OrderSeatService.Cancel(OrderSeatService.coreClient);
-                    if (b){//取消成功
+                    String cancelres= OrderSeatService.Cancel(OrderSeatService.coreClient);
+                    if (cancelres.contains("success")){//取消成功
                         handler.sendEmptyMessage(CANCEL_SUCCESS);
-                    }else {//取消失败
+                    }else if (cancelres.contains("empty")){//已经在别处取消
+                        handler.sendEmptyMessage(HAS_CANCED);
+                    }else {
                         handler.sendEmptyMessage(CANCEL_FAIL);
                     }
 

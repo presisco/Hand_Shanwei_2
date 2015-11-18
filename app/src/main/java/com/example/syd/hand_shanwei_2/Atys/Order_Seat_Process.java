@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.syd.hand_shanwei_2.BookSeats.SelectSeatActivity;
+import com.example.syd.hand_shanwei_2.HttpService.HttpTools;
 import com.example.syd.hand_shanwei_2.HttpService.OrderSeatService.OrderSeatService;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
 import com.example.syd.hand_shanwei_2.R;
@@ -42,7 +43,7 @@ public class Order_Seat_Process extends AppCompatActivity {
     public static final int ORDERSTATUS_SPECIFIC_FAIl =-21;//精确预约失败
     public static final int ORDERSTATUS_SPECIFIC_SEAT_ORDERED =-22;//精确预约此座位已有预约
 
-
+     String resultspe="";
     int orderstatus;
     ProgressBar progressBar;
     ActionBar actionBar;
@@ -96,11 +97,10 @@ public class Order_Seat_Process extends AppCompatActivity {
 
     private void specific_Order(final HttpClient client, final String room, final String sitNo, final String date) {
         progressBar.setVisibility(View.VISIBLE);
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
-                Message message=new Message();
-                try {
+                Message message = new Message();
                     // 获取当前日期+1
                     SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
                     Date beginDate = new Date();
@@ -108,50 +108,73 @@ public class Order_Seat_Process extends AppCompatActivity {
                     calendar.setTime(beginDate);
                     calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + 1);
                     String date1 = format.format(calendar.getTime());
-                    Log.i("bacground","精确预约11111111111111");
-                    UserinfoUtils userinfoUtils=new UserinfoUtils(Order_Seat_Process.this);
-                    Log.i("bacground","精确预22222222222222222");
-                    boolean b=OrderSeatService.testUserInfoIsTrue(userinfoUtils.get_LastId(), userinfoUtils.get_LastPassword());
-                    Log.i("bacground", "精确预333333333");
-                    Log.i("bacground", b + "==" + room + "--" + sitNum + "--" + date1)       ;
-                    System.out.println(b);
-                    List<String> list = OrderSeatService.getYuYueInfo("000" + room, date1); // 获取该房间的列表
-                    String result=OrderSeatService.subYuYueInfo(OrderSeatService.coreClient, "000104", "002", date1);
-                    Log.i("bacground","精确预444444444444444");
-                    Log.i("bacground","精确预约返回结果："+result);
-                    message.what=12;
-                    message.obj=result;
+                    //Log.i("bacground","精确预约11111111111111");
+                    UserinfoUtils userinfoUtils = new UserinfoUtils(Order_Seat_Process.this);
+                try {
+                    OrderSeatService.testUserInfoIsTrue(userinfoUtils.get_LastId(),userinfoUtils.get_LastPassword());
                 } catch (Exception e) {
-                    //链接错误，包括超时
-                    Log.i("bacground","精确预约超时");
-                    message.what=ORDERSTATUS_TIMEOUT;
                     e.printStackTrace();
                 }
-                handler.sendMessage(message);
+                HttpTools.GetHTTPRequest(
+                            "http://yuyue.juneberry.cn/BookSeat/BookSeatListForm.aspx",
+                            OrderSeatService.coreClient);
+                    List<String> list = null; // 获取该房间的列表
+                    try {
+                        list = OrderSeatService.getYuYueInfo("000" + room, date1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (0 == list.size()) {
+                        // 没有可用座位
+                        resultspe = "empty";
+                        message.what = ORDERSTATUS_SPECIFIC_FAIl;
+                    } else {
+                        try {
+                            resultspe = OrderSeatService.subYuYueInfo(OrderSeatService.coreClient,room, sitNo, date);
+                        } catch (Exception e) {
+                            //链接错误，包括超时
+                            Log.i("bacground", "精确预约超时");
+                            message.what = ORDERSTATUS_TIMEOUT;
+                            e.printStackTrace();
+                        }
+                        // System.out.println(res);
+                        if (resultspe.contains("已经存在有效的预约记录")) {
+                            resultspe = "fail";
+                            message.what = ORDERSTATUS_HASORDERED;
 
-            }
+                        }else {
+                            message.what = ORDERSTATUS_SPECIFIC_SUCCESS;
+                        }
+                        //Log.i("bacground","精确预444444444444444");
+                        Log.i("bacground", "精确预约返回结果：" + resultspe);
+                        message.obj = resultspe;
+                     handler.sendMessage(message);
+                    }
+
+                }
+
         }.start();
     }
 
     private void OneKey_Order() {
         progressBar.setVisibility(View.VISIBLE);
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
-                Message message=new Message();
+                Message message = new Message();
                 try {
-                    UserinfoUtils userinfoUtils=new UserinfoUtils(Order_Seat_Process.this);
-                    boolean b=OrderSeatService.testUserInfoIsTrue(userinfoUtils.get_LastId(),userinfoUtils.get_LastPassword());
+                    UserinfoUtils userinfoUtils = new UserinfoUtils(Order_Seat_Process.this);
+                    boolean b = OrderSeatService.testUserInfoIsTrue(userinfoUtils.get_LastId(), userinfoUtils.get_LastPassword());
                     System.out.println(b);
-                    OrderSeatService o=new OrderSeatService();
-                    String result=OrderSeatService.OneKeySit(OrderSeatService.coreClient);
-                    System.out.println(result+"=====");
-                    message.what=ORDERSTATUS_CONECT_SUCCESS;
-                    message.obj=result;
+                    OrderSeatService o = new OrderSeatService();
+                    String result = OrderSeatService.OneKeySit(OrderSeatService.coreClient);
+                    System.out.println(result + "=====");
+                    message.what = ORDERSTATUS_CONECT_SUCCESS;
+                    message.obj = result;
                 } catch (Exception e) {
                     //链接错误，包括超时
-                    message.what=ORDERSTATUS_TIMEOUT;
-                    orderstatus=ORDERSTATUS_TIMEOUT;
+                    message.what = ORDERSTATUS_TIMEOUT;
+                    orderstatus = ORDERSTATUS_TIMEOUT;
                     e.printStackTrace();
 
                 }
@@ -160,6 +183,8 @@ public class Order_Seat_Process extends AppCompatActivity {
             }
         }.start();
     }
+
+
     Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -210,18 +235,24 @@ public class Order_Seat_Process extends AppCompatActivity {
                     break;
                 // TODO: 2015/11/18
                 case ORDERSTATUS_SPECIFIC_FAIl://精确预约失败
-                    Log.i("bacground","精确预约失败");
+                    progressBar.setVisibility(View.INVISIBLE);
+                    Log.i("bacground", "精确预约失败");
                     orderstatus=ORDERSTATUS_SPECIFIC_FAIl;
                     button.setText("再试一次");
                     button.setEnabled(true);
                     break;
                 case ORDERSTATUS_SPECIFIC_SUCCESS://精确预约成功
+                    progressBar.setVisibility(View.INVISIBLE);
+                    order_seat_result_tv.setText(getResources().getText(R.string.order_success));
+
+                    order_infotv.setText(room + "楼" + sitNum + "号" + "时间：" + date);
                     orderstatus=ORDERSTATUS_SPECIFIC_SUCCESS;
                     button.setText("返回");
                     button.setEnabled(true);
-                    Log.i("bacground","精确预约成功,预约信息：");
+                    Log.i("bacground", "精确预约成功,预约信息：");
                     break;
                 case ORDERSTATUS_SPECIFIC_SEAT_ORDERED://精确预约此座位已有人预约
+                    progressBar.setVisibility(View.INVISIBLE);
                     orderstatus=ORDERSTATUS_SPECIFIC_SEAT_ORDERED;
                     button.setText("重新选择座位");
                     button.setEnabled(true);
