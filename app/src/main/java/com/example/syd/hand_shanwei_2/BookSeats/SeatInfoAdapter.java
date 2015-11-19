@@ -34,7 +34,7 @@ public class SeatInfoAdapter extends RecyclerView.Adapter<SeatInfoAdapter.ViewHo
         public ViewHolder(View v) {
             super(v);
             // Define click listener for the ViewHolder's View.
-            cardView = (CardView) v.findViewById(R.id.floorInfoCardView);
+            cardView = (CardView) v.findViewById(R.id.seatInfoCardView);
         }
 
         public CardView getCardView() {

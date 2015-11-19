@@ -18,12 +18,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".Atys.HomeActivity"
-        android:logo="@mipmap/ic_launcher"/>
+        android:logo="@mipmap/ic_launcher"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar"/>
         <activity android:name=".Atys.Oder_Tomorrow_Seat_Home">
         </activity>
         <activity android:name=".Atys.Aty_LogIn"/>
         <activity android:name=".BookSeats.SelectSeatActivity"/>
         <activity android:name=".Atys.Order_Seat_Process"/>
-        <activity android:name=".SearchBook.AtySearchBookResult"/>
+        <activity android:name=".SearchBook.SearchBookResultActivity"/>
     </application>
 </manifest>

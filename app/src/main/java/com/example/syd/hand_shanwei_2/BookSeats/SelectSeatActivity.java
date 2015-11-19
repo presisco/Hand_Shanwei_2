@@ -128,7 +128,9 @@ public class SelectSeatActivity extends Activity{
                         intent.putExtra(SelectSeatActivity.ORDER_SITNUM,mSeatInfoAdapter.getSelectedSeat().id);
                         intent.putExtra(SelectSeatActivity.ORDER_DATE,mBookDate);
                         startActivity(intent);
-                    Log.i("bacground","specific order"+FloorName2ID.getID(mSelectedFloorName)+"=="+mSeatInfoAdapter.getSelectedSeat().id);
+                    Log.i("bacground","specific order"+FloorName2ID.getID(mSelectedFloorName)+"=="
+                            +mSeatInfoAdapter.getSelectedSeat().id+"--"
+                            +mBookDate);
                     }
 
 

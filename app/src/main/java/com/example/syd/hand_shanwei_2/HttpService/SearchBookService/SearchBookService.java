@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.example.syd.hand_shanwei_2.HttpService.HttpTools;
-import com.example.syd.hand_shanwei_2.Model.Book;
+import com.example.syd.hand_shanwei_2.Model.BookInfo;
 import com.example.syd.hand_shanwei_2.Model.BookListState;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -111,30 +111,29 @@ public class SearchBookService extends Service {
      * @param httpContent
      * @return
      */
-    public static List<Book> getBookList(String httpContent) {
-        List<Book> result = new ArrayList<Book>();
+    public static List<BookInfo> getBookList(String httpContent) {
+        List<BookInfo> result = new ArrayList<BookInfo>();
         Document doc = Jsoup.parse(httpContent);
         Elements booklist = doc.getElementsByClass("book_list_info");
         if (booklist.size() == 0)
             return null;
         for (Element bookitem : booklist) {
-            Book book = new Book();
-            book.setName(bookitem.getElementsByTag("a").get(0).text()
-                    .replaceFirst("\\d+\\.", ""));
-            book.setCode(bookitem.getElementsByTag("h3").get(0).ownText());
-            book.setDetail(bookitem.getElementsByTag("p").get(0).ownText()
-                    .replaceFirst("\\(\\d+\\)", "").trim());
+            BookInfo book = new BookInfo();
+            book.name=bookitem.getElementsByTag("a").get(0).text()
+                    .replaceFirst("\\d+\\.", "");
+            book.code=bookitem.getElementsByTag("h3").get(0).ownText();
+            book.detail=bookitem.getElementsByTag("p").get(0).ownText()
+                    .replaceFirst("\\(\\d+\\)", "").trim();
             String temp = bookitem.getElementsByTag("p").get(0)
                     .getElementsByTag("span").get(0).ownText();
-            book.setTotal(Integer.parseInt(temp
+            book.total=Integer.parseInt(temp
                     .substring(0, temp.indexOf("可借")).replace("馆藏复本：", "")
-                    .trim()));
-            book.setRest(Integer.parseInt(temp.substring(temp.indexOf("可借"))
-                    .replace("可借复本：", "").trim()));
-            String marcno = bookitem.getElementsByTag("h3").get(0)
+                    .trim());
+            book.rest=Integer.parseInt(temp.substring(temp.indexOf("可借"))
+                    .replace("可借复本：", "").trim());
+            book.marcno = bookitem.getElementsByTag("h3").get(0)
                     .getElementsByTag("a").get(0).attr("href")
                     .replace("item.php?marc_no=", "");
-            book.setMarcno(marcno);
             result.add(book);
         }
         return result;
