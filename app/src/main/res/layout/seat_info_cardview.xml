@@ -3,7 +3,7 @@
     style="@style/Widget.SeatInfo.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/floorInfoCardView">
+    android:id="@+id/seatInfoCardView">
 
     <RelativeLayout
         android:layout_width="match_parent"

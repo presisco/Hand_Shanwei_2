@@ -23,4 +23,10 @@
     <string name="cancel">取消</string>
     <string name="twicesearchtip">在搜索框中输入内容，进行二次搜索</string>
     <string name="twicesearch">二次搜索</string>
+    <string name="book_searchmode_global">全局搜索</string>
+    <string name="book_searchmode_secondary">二次搜索</string>
+    <string name="book_unit">本</string>
+    <string name="secondary_search_hint">提示:按返回键重新搜索</string>
+    <string name="book_name">书名</string>
+    <string name="book_author">作者</string>
 </resources>

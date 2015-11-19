@@ -1,57 +1,33 @@
 package com.example.syd.hand_shanwei_2.SearchBook;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.LoaderManager;
-import android.content.AsyncQueryHandler;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.syd.hand_shanwei_2.R;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Presisco on 2015/9/28.
  */
 public class SearchBookContentPage extends Fragment implements View.OnClickListener {
     private static final String LOG_TAG = SearchBookContentPage.class.getSimpleName();
-    Button btnsearchbyauthor,btnsearchbybookname;
-    //EditText etsearchbook;
-    private AutoCompleteTextView et_search; //输入文本框
-    String queryBook = "";//检索书名
+    private static final Integer MAX_HISTORY_COUNT=10;
+    private Button mSearchByAuthorBtn;
+    private Button mSearchByBooknameBtn;
+
+    private AutoCompleteTextView mSearchKeyInput;
+    ArrayAdapter<String> mSearchHistoryAdapter;
+    BookSearchHistoryHelper mHistoryHelper;
+
     public static Fragment newInstance() {
         SearchBookContentPage fragment = new SearchBookContentPage();
         return fragment;
@@ -82,12 +58,12 @@ public class SearchBookContentPage extends Fragment implements View.OnClickListe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnsearchbyauthor= (Button) view.findViewById(R.id.searchbyauthor);
-        btnsearchbybookname= (Button) view.findViewById(R.id.searchbybookname);
-        et_search= (AutoCompleteTextView) view.findViewById(R.id.etsearchbook);
-        btnsearchbybookname.setOnClickListener(this);
-        btnsearchbyauthor.setOnClickListener(this);
-        initAutoComplete("history", et_search);  //搜索历史的存储显示
+        mSearchByAuthorBtn = (Button) view.findViewById(R.id.searchByAuthorBtn);
+        mSearchByBooknameBtn = (Button) view.findViewById(R.id.searchByBookNameBtn);
+        mSearchKeyInput = (AutoCompleteTextView) view.findViewById(R.id.searchKeyInput);
+        mSearchByBooknameBtn.setOnClickListener(this);
+        mSearchByAuthorBtn.setOnClickListener(this);
+        initAutoComplete("history", mSearchKeyInput);  //搜索历史的存储显示
     }
 
     @Override
@@ -103,32 +79,27 @@ public class SearchBookContentPage extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.searchbyauthor:
-                Intent intent1 = new Intent(getActivity(),AtySearchBookResult.class);
-                intent1.putExtra("queryBook", et_search.getText().toString().trim());
-                intent1.putExtra("request", 200);
+            case R.id.searchByAuthorBtn:
+                saveHistory();
+                Intent intent1 = new Intent(getActivity(),SearchBookResultActivity.class);
+                intent1.putExtra(SearchBookConst.SEARCH_BOOK_KEY, mSearchKeyInput.getText().toString().trim());
+                intent1.putExtra(SearchBookConst.SEARCH_TYPE, SearchBookConst.SEARCH_TYPE_AUTHOR);
                 startActivity(intent1);
                 // TODO: 2015/11/18  
                 break;
-            case R.id.searchbybookname:
+            case R.id.searchByBookNameBtn:
                 // TODO: 2015/11/18
-                Intent intent = new Intent(getActivity(), AtySearchBookResult.class);
-                intent.putExtra("queryBook", et_search.getText().toString().trim());
-                intent.putExtra("request", 100);
+                saveHistory();
+                Intent intent = new Intent(getActivity(), SearchBookResultActivity.class);
+                intent.putExtra(SearchBookConst.SEARCH_BOOK_KEY, mSearchKeyInput.getText().toString().trim());
+                intent.putExtra(SearchBookConst.SEARCH_TYPE, SearchBookConst.SEARCH_TYPE_BOOKNAME);
                 startActivity(intent);
                 break;
         }
     }
-    private void saveHistory(String field,
-                             AutoCompleteTextView autoCompleteTextView) {
-        String text = autoCompleteTextView.getText().toString();
-        SharedPreferences sp = getActivity().getSharedPreferences("network_url", 0);
-        String longhistory = sp.getString(field, "nothing");
-        if (!longhistory.contains(text + ",")) {
-            StringBuilder sb = new StringBuilder(longhistory);
-            sb.insert(0, text + ",");
-            sp.edit().putString("history", sb.toString()).commit();
-        }
+    private void saveHistory() {
+        String text = mSearchKeyInput.getText().toString();
+        mHistoryHelper.addSearchHistory(text);
     }
 
     /**
@@ -140,19 +111,12 @@ public class SearchBookContentPage extends Fragment implements View.OnClickListe
      *            要操作的AutoCompleteTextView
      */
     private void initAutoComplete(String field,
-                                  AutoCompleteTextView autoCompleteTextView) {
-        SharedPreferences sp = getActivity().getSharedPreferences("network_url", 0);
-        String longhistory = sp.getString("history", "nothing");
-        String[] histories = longhistory.split(",");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, histories);
-        // 只保留最近的10条的记录
-        if (histories.length > 10) {
-            String[] newHistories = new String[5];
-            System.arraycopy(histories, 0, newHistories, 0, 10);
-            adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,newHistories);
-        }
-        autoCompleteTextView.setAdapter(adapter);
+                                  final AutoCompleteTextView autoCompleteTextView) {
+        mHistoryHelper =new BookSearchHistoryHelper(getActivity(),null,1);
+
+        mSearchHistoryAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, mHistoryHelper.querySearchHistory(MAX_HISTORY_COUNT));
+        autoCompleteTextView.setAdapter(mSearchHistoryAdapter);
         autoCompleteTextView
                 .setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -163,5 +127,11 @@ public class SearchBookContentPage extends Fragment implements View.OnClickListe
                         }
                     }
                 });
+        autoCompleteTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((AutoCompleteTextView)v).showDropDown();
+            }
+        });
     }
 }
