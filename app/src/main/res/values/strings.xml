@@ -29,4 +29,5 @@
     <string name="secondary_search_hint">提示:按返回键重新搜索</string>
     <string name="book_name">书名</string>
     <string name="book_author">作者</string>
+    <string name="recycler_update_footer">点击加载下一页</string>
 </resources>

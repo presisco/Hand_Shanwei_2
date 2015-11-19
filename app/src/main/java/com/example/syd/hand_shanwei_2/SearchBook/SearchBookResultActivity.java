@@ -28,8 +28,7 @@ import java.util.List;
 /**
  * Created by syd on 2015/11/18.
  */
-public class SearchBookResultActivity extends AppCompatActivity implements View.OnClickListener {
-    private Intent intent;
+public class SearchBookResultActivity extends AppCompatActivity implements SearchBookResultAdapter.OnUpdateDataInterface{
 
     private Button mSecondarySearchBtn;
     private EditText mSecondarySearchEditText;
@@ -46,16 +45,17 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
     private String mPrimaryType;
     private String mSecondaryKeyWord;
     private String mSecondaryType;
+    private Boolean mIsPrimarySearch=true;
 
     private Integer mCurPage=0;
     private Integer mTotalPage=0;
+    private Integer lastVisibileItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_book_result);
 
-        intent=getIntent();
         mSecondarySearchEditText=(EditText)findViewById(R.id.bookSearchResultFilter);
         mSearchBookResultRecyclerView = (RecyclerView) findViewById(R.id.bookSearchResultRecyclerView);
         mSecondarySearchBtn= (Button) findViewById(R.id.bookSecondarySearchButton);
@@ -69,6 +69,8 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
                     case 1:mSecondaryType=SearchBookConst.SEARCH_TYPE_AUTHOR;break;
                     default:return;
                 }
+                mIsPrimarySearch=false;
+                mCurPage=1;
                 new GetBookListSecondary().execute();
             }
         });
@@ -80,14 +82,14 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
         mSearchTypeSpinner.setAdapter(mSearchTypeArrayAdapter);
         mSearchTypeSpinner.setSelection(0, true);
 
-        RecyclerView.LayoutManager mRecyclerViewLayoutManager = new LinearLayoutManager(this);
+        final RecyclerView.LayoutManager mRecyclerViewLayoutManager = new LinearLayoutManager(this);
         mSearchBookResultRecyclerView.setLayoutManager(mRecyclerViewLayoutManager);
         mSearchBookResultAdapter=new SearchBookResultAdapter(new ArrayList<BookInfo>(),this);
         mSearchBookResultRecyclerView.setAdapter(mSearchBookResultAdapter);
 
         // 获得意图
-        Intent intent = getIntent();
         // 读取数据
+        Intent intent=getIntent();
         mPrimaryKeyWord = intent.getStringExtra(SearchBookConst.SEARCH_BOOK_KEY);
         mPrimaryType=intent.getStringExtra(SearchBookConst.SEARCH_TYPE);
         mCurPage=1;
@@ -147,17 +149,16 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
                             + "");
             }
         });*/
-
-
     }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
     @Override
-    public void onClick(View v) {
+    public void onUpdate()
+    {
+        mCurPage+=1;
+        if(mIsPrimarySearch)
+            new GetBookListPrimary().execute();
+        else
+            new GetBookListSecondary().execute();
     }
 
     private class GetBookListSecondary extends AsyncTask<String, Void, String> { // 加载检索结果
@@ -169,7 +170,12 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
                 // 获取到图书信息，存储到book集合中
                 List<BookInfo> list = SearchBookService.getBookList(result);
                 if (list != null) {
-                    mSearchBookResultAdapter.appendData(list);
+                    if(mCurPage==1) {
+                        mSearchBookResultAdapter.appendData(list);
+                    }
+                    else{
+                        mSearchBookResultAdapter.updateDataSet(list);
+                    }
                     mSearchBookResultAdapter.notifyDataSetChanged();
                     mTotalPage =SearchBookService.getListState(result).totalPage; // 获取页数信息
                     mCurPage=SearchBookService.getListState(result).currPage;
@@ -188,7 +194,7 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
 
         protected String doInBackground(String... arg0) {
             return SearchBookService.queryTwice(mPrimaryKeyWord, mPrimaryType, mSecondaryKeyWord,
-                    mSecondaryType, mCurPage+1);
+                    mSecondaryType, mCurPage);
         }
     }
 
@@ -205,7 +211,13 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
                 // 获取到图书信息，存储到book集合中
                 List<BookInfo> list = SearchBookService.getBookList(result);
                 if (list != null) {
-                    mSearchBookResultAdapter.updateDataSet(list);
+                    Integer curPos=mSearchBookResultAdapter.getItemCount();
+                    if(mCurPage==1) {
+                        mSearchBookResultAdapter.updateDataSet(list);
+                    }
+                    else{
+                        mSearchBookResultAdapter.appendData(list);
+                    }
                     mSearchBookResultAdapter.notifyDataSetChanged();
                     mTotalPage =SearchBookService.getListState(result).totalPage; // 获取页数信息
                     mCurPage=SearchBookService.getListState(result).currPage;
