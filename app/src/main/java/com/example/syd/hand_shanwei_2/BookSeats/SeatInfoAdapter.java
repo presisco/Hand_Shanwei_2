@@ -17,7 +17,7 @@ import com.example.syd.hand_shanwei_2.R;
  * Created by presisco on 2015/11/16.
  */
 public class SeatInfoAdapter extends RecyclerView.Adapter<SeatInfoAdapter.ViewHolder> {
-    private static final String TAG = "FloorInfoAdapter";
+    private static final String TAG = "SeatInfoAdapter";
     private Context parent;
     private SeatInfo[] mDataSet;
     //设置为静态

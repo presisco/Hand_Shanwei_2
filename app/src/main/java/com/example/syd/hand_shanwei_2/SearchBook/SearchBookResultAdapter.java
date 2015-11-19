@@ -21,11 +21,13 @@ import java.util.List;
  */
 
 public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final String TAG = "FloorInfoAdapter";
+    private static final String TAG = "SearchBookResultAdapter";
     private Context parent;
     private List<BookInfo> mDataSet;
+    private OnUpdateDataInterface parentUpdateInterface;
     private static final Integer TYPE_FOOTER=1;
     private static final Integer TYPE_ITEM=0;
+    private Boolean mShowFooter = true;
 
     public interface OnUpdateDataInterface{
         public void onUpdate();
@@ -68,7 +70,8 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
      *
      * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
      */
-    public SearchBookResultAdapter(List<BookInfo> dataSet, Context context) {
+    public SearchBookResultAdapter(List<BookInfo> dataSet, Context context, OnUpdateDataInterface source) {
+        parentUpdateInterface = source;
         parent = context;
         mDataSet = dataSet;
     }
@@ -142,7 +145,7 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
             rootView.findViewById(R.id.recyclerViewFooterTextView).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    parentUpdateInterface.onUpdate();
                 }
             });
         }
@@ -152,7 +155,10 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataSet.size()+1;
+        if (mShowFooter)
+            return mDataSet.size() + 1;
+        else
+            return mDataSet.size();
     }
 
     @Override
@@ -166,5 +172,13 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void appendData(List<BookInfo> append)
     {
         mDataSet.addAll(append);
+    }
+
+    public void showFooter() {
+        mShowFooter = true;
+    }
+
+    public void hideFooter() {
+        mShowFooter = false;
     }
 }

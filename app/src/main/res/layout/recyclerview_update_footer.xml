@@ -9,5 +9,6 @@
         android:text="@string/recycler_update_footer"
         android:id="@+id/recyclerViewFooterTextView"
         android:layout_gravity="center"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/medium_text" />
 </RelativeLayout>
