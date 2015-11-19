@@ -1,4 +1,4 @@
-package com.example.syd.hand_shanwei_2.Atys;
+package com.example.syd.hand_shanwei_2.BookSeats;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.syd.hand_shanwei_2.BookSeats.SelectSeatActivity;
 import com.example.syd.hand_shanwei_2.HttpService.HttpTools;
 import com.example.syd.hand_shanwei_2.HttpService.OrderSeatService.OrderSeatService;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
@@ -31,18 +30,16 @@ import java.util.List;
  * Created by syd on 2015/11/16.
  */
 public class Order_Seat_Process extends AppCompatActivity {
-
     TextView order_seat_result_tv,order_infotv;
     Button button;
     public static final int ORDERSTATUS_TIMEOUT =-1;//链接失败
-    public static final int ORDERSTATUS_CONECT_SUCCESS =1;//链接成功
+    //public static final int ORDERSTATUS_CONECT_SUCCESS =1;//链接成功
     public static final int ORDERSTATUS_HASORDERED =2;//已经存在有效预约
     public static final int ORDERSTATUS_ONEKEY_FAIL =-11;//一键预约失败
     public static final int ORDERSTATUS_ONE_KEY_SUCCESS =11;//一键预约成功
     public static final int ORDERSTATUS_SPECIFIC_SUCCESS =21;//精确预约成功
     public static final int ORDERSTATUS_SPECIFIC_FAIl =-21;//精确预约失败
     public static final int ORDERSTATUS_SPECIFIC_SEAT_ORDERED =-22;//精确预约此座位已有预约
-
      String resultspe="";
     int orderstatus;
     ProgressBar progressBar;
@@ -148,8 +145,8 @@ public class Order_Seat_Process extends AppCompatActivity {
                         //Log.i("bacground","精确预444444444444444");
                         Log.i("bacground", "精确预约返回结果：" + resultspe);
                         message.obj = resultspe;
-                     handler.sendMessage(message);
                     }
+                     handler.sendMessage(message);
 
                 }
 
@@ -165,12 +162,19 @@ public class Order_Seat_Process extends AppCompatActivity {
                 try {
                     UserinfoUtils userinfoUtils = new UserinfoUtils(Order_Seat_Process.this);
                     boolean b = OrderSeatService.testUserInfoIsTrue(userinfoUtils.get_LastId(), userinfoUtils.get_LastPassword());
-                    System.out.println(b);
-                    OrderSeatService o = new OrderSeatService();
                     String result = OrderSeatService.OneKeySit(OrderSeatService.coreClient);
+                    if (result.contains("empty")){//一键预约失败
+                        message.what=ORDERSTATUS_ONEKEY_FAIL;
+                        orderstatus=ORDERSTATUS_ONEKEY_FAIL;
+                    }else if (result.contains("fail")){//已经有过预约
+                        message.what=ORDERSTATUS_HASORDERED;
+                        orderstatus=ORDERSTATUS_HASORDERED;
+                    }else {//一键预约成功
+                        message.what=ORDERSTATUS_ONE_KEY_SUCCESS;
+                        message.obj=result;
+                        orderstatus=ORDERSTATUS_ONE_KEY_SUCCESS;
+                    }
                     System.out.println(result + "=====");
-                    message.what = ORDERSTATUS_CONECT_SUCCESS;
-                    message.obj = result;
                 } catch (Exception e) {
                     //链接错误，包括超时
                     message.what = ORDERSTATUS_TIMEOUT;
@@ -200,18 +204,35 @@ public class Order_Seat_Process extends AppCompatActivity {
                     button.setText("再试一次");
                     button.setEnabled(true);
                     break;
-                case ORDERSTATUS_CONECT_SUCCESS://一键预约连接成功
-                    if (msg.obj.toString().contains("empty")){
-                        progressBar.setVisibility(View.INVISIBLE);
+                case ORDERSTATUS_ONE_KEY_SUCCESS://一键预成功
                         order_infotv.setVisibility(View.VISIBLE);
-                        order_seat_result_tv.setTextColor(getResources().getColor(R.color.red));
-                        order_seat_result_tv.setText(getResources().getText(R.string.order_fail));
-                        order_infotv.setText(getResources().getText(R.string.order_empty_tip));
-                        orderstatus= ORDERSTATUS_ONEKEY_FAIL;
-                        button.setText("再试一次");
-                        button.setEnabled(true);
-
-                    }else if (msg.obj.toString().contains("fail")){
+                    order_seat_result_tv.setTextColor(getResources().getColor(R.color.green));
+                    order_seat_result_tv.setText(getResources().getText(R.string.order_success));
+                    progressBar.setVisibility(View.INVISIBLE);
+                    String[] strings=msg.obj.toString().split(",");
+                    order_infotv.setText("预约位置："+strings[0]+"楼"+strings[1]+"号座,预约日期："+strings[2]+"\n请在7:50至8:35到图书馆刷卡确认");
+                    /*for (int i=0;i<strings.length;++i){
+                        Log.i("bac","一键："+strings[i]);
+                    }*/
+                    //将预约信息添加到数据库
+                    OrderSeatHistoryHelper orderSeatHistoryHelper=new OrderSeatHistoryHelper(Order_Seat_Process.this);
+                    orderSeatHistoryHelper.insertOrderInfo(strings[0],strings[1],strings[2]);
+                    orderstatus =ORDERSTATUS_ONE_KEY_SUCCESS;
+                    button.setText("返回");
+                    button.setEnabled(true);
+                   break;
+                case ORDERSTATUS_ONEKEY_FAIL://一键预约失败
+                    progressBar.setVisibility(View.INVISIBLE);
+                    order_infotv.setVisibility(View.VISIBLE);
+                    order_seat_result_tv.setTextColor(getResources().getColor(R.color.red));
+                    order_seat_result_tv.setText(getResources().getText(R.string.order_fail));
+                    order_infotv.setText(getResources().getText(R.string.order_empty_tip));
+                    orderstatus= ORDERSTATUS_ONEKEY_FAIL;
+                    button.setText("再试一次");
+                    button.setEnabled(true);
+                    break;
+                case ORDERSTATUS_HASORDERED://已经存在预约记录
+                    Log.i("9999999999999999","13");
                         progressBar.setVisibility(View.INVISIBLE);
                         order_infotv.setVisibility(View.VISIBLE);
                         order_seat_result_tv.setTextColor(getResources().getColor(R.color.red));
@@ -220,47 +241,82 @@ public class Order_Seat_Process extends AppCompatActivity {
                         orderstatus = ORDERSTATUS_HASORDERED;
                         button.setText("返回");
                         button.setEnabled(true);
-                    }
-                    else {//一键预约成功
-                        order_infotv.setVisibility(View.VISIBLE);
-                        order_seat_result_tv.setTextColor(getResources().getColor(R.color.green));
-                        order_seat_result_tv.setText(getResources().getText(R.string.order_success));
-                        progressBar.setVisibility(View.INVISIBLE);
-                        order_infotv.setText(msg.obj.toString());
-                        orderstatus =ORDERSTATUS_ONE_KEY_SUCCESS;
-                        button.setText("返回");
-                        button.setEnabled(true);
-
-                    }
                     break;
                 // TODO: 2015/11/18
                 case ORDERSTATUS_SPECIFIC_FAIl://精确预约失败
                     progressBar.setVisibility(View.INVISIBLE);
                     Log.i("bacground", "精确预约失败");
                     orderstatus=ORDERSTATUS_SPECIFIC_FAIl;
-                    button.setText("再试一次");
+                    button.setText("重新选择座位");
                     button.setEnabled(true);
                     break;
                 case ORDERSTATUS_SPECIFIC_SUCCESS://精确预约成功
+                    order_infotv.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                     order_seat_result_tv.setText(getResources().getText(R.string.order_success));
-
-                    order_infotv.setText(room + "楼" + sitNum + "号" + "时间：" + date);
+                    room=roomid_totext(room);
+                    order_infotv.setText("预约位置:"+room + "楼" + sitNum + "号座" + "预约日期：" + date+"\n请在7:50至8:35到图书馆刷卡确认");
                     orderstatus=ORDERSTATUS_SPECIFIC_SUCCESS;
                     button.setText("返回");
+                    //保存预约信息到数据库
+                    OrderSeatHistoryHelper orderSeatHistoryHelper1=new OrderSeatHistoryHelper(Order_Seat_Process.this);
+                    orderSeatHistoryHelper1.insertOrderInfo(room,sitNum,date);
                     button.setEnabled(true);
-                    Log.i("bacground", "精确预约成功,预约信息：");
+                    Log.i("bacground", "精确预约成功,预约信息："+room+"楼"+sitNum+"号时间"+date+"\n请在7:50至8:35到图书馆刷卡确认");
                     break;
-                case ORDERSTATUS_SPECIFIC_SEAT_ORDERED://精确预约此座位已有人预约
+               /* case ORDERSTATUS_SPECIFIC_SEAT_ORDERED://精确预约此座位已有人预约
                     progressBar.setVisibility(View.INVISIBLE);
                     orderstatus=ORDERSTATUS_SPECIFIC_SEAT_ORDERED;
                     button.setText("重新选择座位");
                     button.setEnabled(true);
                     Log.i("bacground","精确预约此座位已有人预约");
-                    break;
+                    break;*/
             }
         }
     };
+
+    private String roomid_totext(String id) {
+        String room=null;
+        switch (id){
+            case "000103":
+                room="3";
+                break;
+            case "000104":
+                room="4";
+                break;
+            case "000105":
+                room="5";
+                break;
+            case "000106":
+                room="6";
+                break;
+            case "000107":
+                room="7";
+                break;
+            case "000108":
+                room="8";
+                break;
+            case "000109":
+                room="9";
+                break;
+            case "000110":
+                room="10";
+                break;
+            case "000111":
+                room="11";
+                break;
+            case "000112":
+                room="12";
+                break;
+            case "000203":
+                room="图东环";
+                break;
+            case "000204":
+                room="图西环";
+                break;
+        }
+        return room;
+    }
 
     @Override
     public void onBackPressed() {

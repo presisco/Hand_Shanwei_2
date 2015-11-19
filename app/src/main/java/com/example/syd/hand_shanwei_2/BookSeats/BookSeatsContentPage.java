@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.syd.hand_shanwei_2.Atys.Aty_LogIn;
 import com.example.syd.hand_shanwei_2.HttpService.OrderSeatService.OrderSeatService;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
 import com.example.syd.hand_shanwei_2.R;
@@ -24,6 +25,7 @@ import com.example.syd.hand_shanwei_2.Model.FloorInfo;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 /**
@@ -100,9 +102,17 @@ public class BookSeatsContentPage extends Fragment{
         randomBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent=new Intent(getContext(),SelectSeatActivity.class);
-                newIntent.putExtra("random",true);
+                //先判断是否已经登陆
+                UserinfoUtils userinfoUtils=new UserinfoUtils(getActivity());
+                if (userinfoUtils.get_Login_Status()){
+                Intent newIntent=new Intent(getContext(),Order_Seat_Process.class);
+                newIntent.putExtra(SelectSeatActivity.ORDERMODE,0);
                 startActivity(newIntent);
+
+                }else {
+                    Toast.makeText(getActivity(),"请先登录！",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), Aty_LogIn.class));
+                }
             }
         });
 
@@ -201,7 +211,12 @@ public class BookSeatsContentPage extends Fragment{
                         ,"000223","001",date);*/
                 UserinfoUtils userinfoUtils=new UserinfoUtils(getActivity());
                 //System.out.println(userinfoUtils.get_LastId()+"==="+userinfoUtils.get_LastPassword());
+                if (userinfoUtils.get_Login_Status()){
                 floorInfos=OrderSeatService.getFloorInfo(userinfoUtils.get_LastId(),userinfoUtils.get_LastPassword());
+                }else {
+                floorInfos=OrderSeatService.getFloorInfo("201100800169","011796");
+
+                }
                 isfirstin=false;
                 mDataSet=new FloorInfo[12];
                for (int j=0;j<12;j++){

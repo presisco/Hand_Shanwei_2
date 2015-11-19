@@ -1,30 +1,23 @@
 package com.example.syd.hand_shanwei_2.BookSeats;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TimeUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.syd.hand_shanwei_2.Atys.Order_Seat_Process;
+import com.example.syd.hand_shanwei_2.Atys.Aty_LogIn;
 import com.example.syd.hand_shanwei_2.HttpService.OrderSeatService.OrderSeatService;
 import com.example.syd.hand_shanwei_2.Local_Utils.FloorName2ID;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
-import com.example.syd.hand_shanwei_2.Model.FloorInfo;
 import com.example.syd.hand_shanwei_2.Model.SeatInfo;
 import com.example.syd.hand_shanwei_2.R;
 
@@ -32,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -111,31 +103,36 @@ public class SelectSeatActivity extends Activity{
                         +"|Seat_ID:"+mSeatInfoAdapter.getSelectedSeat().id);
                 Toast.makeText(SelectSeatActivity.this,"Floor_ID:"+FloorName2ID.getID(mSelectedFloorName)
                         +"|Seat_ID:"+mSeatInfoAdapter.getSelectedSeat().id,Toast.LENGTH_LONG).show();*/
-                if (randomOrder){
-                    // TODO: 2015/11/18 一键预约
-                    Log.i("bacground", "on key order");
-                    //0代表一键预约
-                    intent.putExtra(SelectSeatActivity.ORDERMODE,0);
-                    startActivity(intent);
-
-                }else {
-                    if (SeatInfoAdapter.selected==-1){
-                        Toast.makeText(SelectSeatActivity.this,"请选择座位！",Toast.LENGTH_SHORT).show();
-                    }else {
-                        // TODO: 2015/11/18 精确预约 1
-                        intent.putExtra(SelectSeatActivity.ORDERMODE,1);
-                        intent.putExtra(SelectSeatActivity.ORDER_ROOM,FloorName2ID.getID(mSelectedFloorName));
-                        intent.putExtra(SelectSeatActivity.ORDER_SITNUM,mSeatInfoAdapter.getSelectedSeat().id);
-                        intent.putExtra(SelectSeatActivity.ORDER_DATE,mBookDate);
+                UserinfoUtils userinfoUtils=new UserinfoUtils(SelectSeatActivity.this);
+                //判断是否登陆
+                if (userinfoUtils.get_Login_Status()) {
+                    if (randomOrder) {
+                        // TODO: 2015/11/18 一键预约
+                        Log.i("bacground", "on key order");
+                        //0代表一键预约
+                        intent.putExtra(SelectSeatActivity.ORDERMODE, 0);
                         startActivity(intent);
-                    Log.i("bacground","specific order"+FloorName2ID.getID(mSelectedFloorName)+"=="
-                            +mSeatInfoAdapter.getSelectedSeat().id+"--"
-                            +mBookDate);
+
+                    } else {
+                        if (SeatInfoAdapter.selected == -1) {
+                            Toast.makeText(SelectSeatActivity.this, "请选择座位！", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // TODO: 2015/11/18 精确预约 1
+                            intent.putExtra(SelectSeatActivity.ORDERMODE, 1);
+                            intent.putExtra(SelectSeatActivity.ORDER_ROOM, FloorName2ID.getID(mSelectedFloorName));
+                            intent.putExtra(SelectSeatActivity.ORDER_SITNUM, mSeatInfoAdapter.getSelectedSeat().id);
+                            intent.putExtra(SelectSeatActivity.ORDER_DATE, mBookDate);
+                            startActivity(intent);
+                            Log.i("bacground", "specific order" + FloorName2ID.getID(mSelectedFloorName) + "=="
+                                    + mSeatInfoAdapter.getSelectedSeat().id + "--"
+                                    + mBookDate);
+                        }
                     }
 
-
+                }else {
+                    Toast.makeText(SelectSeatActivity.this,"请先登录！",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(SelectSeatActivity.this, Aty_LogIn.class));
                 }
-
             }
         });
 
@@ -214,10 +211,18 @@ public class SelectSeatActivity extends Activity{
                         HttpConnectionService.getHttpClient());
                 OrderSeatService.subYuYueInfo(HttpConnectionService.getHttpClient()
                         ,"000223","001",date);*/
+                List<String> seatRaw=new ArrayList<>();
+                //判断是否登陆
                 UserinfoUtils userinfoUtils=new UserinfoUtils(SelectSeatActivity.this);
+                if (userinfoUtils.get_Login_Status()){
                 OrderSeatService.testUserInfoIsTrue(userinfoUtils.get_LastId(), userinfoUtils.get_LastPassword());
+                seatRaw=OrderSeatService.getYuYueInfo(FloorName2ID.getID(mSelectedFloorName),mBookDate);
+                }else {
+                OrderSeatService.testUserInfoIsTrue("201100800169","011796");
+                seatRaw=OrderSeatService.getYuYueInfo(FloorName2ID.getID(mSelectedFloorName),mBookDate);
+
+                }
                 //System.out.println(userinfoUtils.get_LastId()+"==="+userinfoUtils.get_LastPassword());
-                List<String> seatRaw=OrderSeatService.getYuYueInfo(FloorName2ID.getID(mSelectedFloorName),mBookDate);
                 mDataSet=new SeatInfo[seatRaw.size()];
                 for (int j=0;j<seatRaw.size();j++){
                     mDataSet[j]=new SeatInfo();

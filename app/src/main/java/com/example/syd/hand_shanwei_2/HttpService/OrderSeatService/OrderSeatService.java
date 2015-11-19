@@ -8,7 +8,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.example.syd.hand_shanwei_2.HttpService.HttpConnectionService;
 import com.example.syd.hand_shanwei_2.HttpService.HttpTools;
 import com.example.syd.hand_shanwei_2.Model.FloorInfo;
 
@@ -202,7 +201,11 @@ public class OrderSeatService extends Service{
                     + "</lbComformTime></info>";
 
             info += "</infos>";*/
-            String s=room.charAt(room.length() - 1) +"楼"+sitNo+"座位号"+"日期："+date;
+           //本地储存信息
+            //OrderInfoUtil orderInfoUtil=new OrderInfoUtil(contex);
+            //orderInfoUtil.refreshOrderInfo(room.charAt(room.length() - 1)+"",sitNo,date);
+            String s=room.charAt(room.length() - 1) +","+sitNo+","+date;
+            //保存预约记录
             return s;
         }
 
@@ -291,11 +294,9 @@ public class OrderSeatService extends Service{
             String val = subStr.substring(index + tag1.length() + 30, index + tag1.length() + 33);
 
             lists.add(val);
-
             subStr = subStr.substring(index + tag1.length() + 33);
             index = subStr.indexOf(tag1);
         }
-
         return lists;
     }
 
@@ -317,7 +318,6 @@ public class OrderSeatService extends Service{
         postParameters.add(new BasicNameValuePair("__EVENTVALIDATION","/wEWBQKn3LCMAgKP25+PBwKozKffBwKe8pjrCQLbhOG0Ag8P+D24L0yDPqWsH9l8fvFZfIvf5D0SWty7+UgyaODK"));
         postParameters.add(new BasicNameValuePair("__VIEWSTATE","/wEPDwUKLTgxNTcwOTg4OQ9kFgICAw9kFgYCBw8QZA8WDGYCAQICAgMCBAIFAgYCBwIIAgkCCgILFgwQBQbkuInmpbwFBjAwMDEwM2cQBQblm5vmpbwFBjAwMDEwNGcQBQbkupTmpbwFBjAwMDEwNWcQBQblha3mpbwFBjAwMDEwNmcQBQbkuIPmpbwFBjAwMDEwN2cQBQblhavmpbwFBjAwMDEwOGcQBQbkuZ3mpbwFBjAwMDEwOWcQBQbljYHmpbwFBjAwMDExMGcQBQnljYHkuIDmpbwFBjAwMDExMWcQBQnljYHkuozmpbwFBjAwMDExMmcQBRLlm77kuJznjq/mpbzkuInmpbwFBjAwMDIwM2cQBRLlm77kuJznjq/mpbzlm5vmpbwFBjAwMDIwNGdkZAIJDxYEHglpbm5lcmh0bWxlHgdWaXNpYmxlaGQCCw88KwAJAGRk3N7Y/deh68M4Efs081yDORR8De16X09J94eraQdd4ek="));
         // 发送post请求
-
         String yuyueInfo = HttpTools.PostHTTPRequest("http://yuyue.juneberry.cn/BookSeat/BookSeatListForm.aspx", coreClient, postParameters);
         // 座号list
         List<String> lists =parseSitsInfo(yuyueInfo);

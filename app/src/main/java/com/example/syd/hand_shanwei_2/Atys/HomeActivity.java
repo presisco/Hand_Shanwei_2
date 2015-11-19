@@ -1,8 +1,15 @@
 package com.example.syd.hand_shanwei_2.Atys;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,11 +29,13 @@ public class HomeActivity extends FragmentActivity {
     long pre_click_time;
     android.app.ActionBar actionBar;
     private  SlidingTabsColorsFragment mSlidingTabsHost;
-
+    WifiManager wifiManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        checkNetworkState();
+       wifiManager= (WifiManager) getSystemService(Context.WIFI_SERVICE);
         //getActionBar().setTitle(getResources().getString(R.string.app_name));
         if(savedInstanceState != null)
             return;
@@ -64,6 +73,53 @@ public class HomeActivity extends FragmentActivity {
         }
         super.onBackPressed();
     }
+    private boolean checkNetworkState() {
+        boolean flag = false;
+        // 得到网络连接信息
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // 去进行判断网络是否连接
+        if (manager.getActiveNetworkInfo() != null) {
+            flag = manager.getActiveNetworkInfo().isAvailable();
+        }
+        if (!flag) {
+            setNetwork();
+        } else {
+            // Intent it = new Intent(this, ViewPager.class);
+            // startActivity(it);
+            // // isNetworkAvailable();
+
+        }
+
+        return flag;
+    }
+
+    private void setNetwork() {
+        // TODO Auto-generated method stub
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        builder.setTitle("网络提示信息");
+        builder.setMessage("网络不可用，如果继续，请先设置网络！");
+        builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
+                startActivity(intent);
+                wifiManager.setWifiEnabled(true);
+            }
+        });
+
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // return;
+               /* Intent intent = new Intent(ViewPager.this, MainActivity.class);
+                intent.putExtra("request", 2);
+                startActivity(intent);*/
+                dialog.dismiss();
+            }
+        });
+        builder.create();
+        builder.show();
+    }
+
 
 /*    @Override
     protected void onActivityResult(int request_code,int result_code,Intent data)

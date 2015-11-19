@@ -37,7 +37,6 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
     private ArrayAdapter<String> mSearchTypeArrayAdapter;
     //结果页面状态
     private BookListState bookListState;
-
     //搜索结果列表
     private SearchBookResultAdapter mSearchBookResultAdapter;
     private RecyclerView mSearchBookResultRecyclerView;

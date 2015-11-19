@@ -29,22 +29,23 @@ public class WelcomeAty extends Activity {
         @Override
         public void handleMessage(Message msg) {
             //判断是否已经登陆，如果没有登陆，则进入登陆界面
-            UserinfoUtils userinfoUtils =new UserinfoUtils(WelcomeAty.this);
-            if (!userinfoUtils.get_Login_Status()){
+//            UserinfoUtils userinfoUtils =new UserinfoUtils(WelcomeAty.this);
+            /*if (!userinfoUtils.get_Login_Status()){
                 Toast.makeText(WelcomeAty.this,"请先登录",Toast.LENGTH_LONG).show();
                 goAtyLogin();
             }else {
                 goHome();//进入程序主界面
-            }
+            }*/
+            goHome();
         }
 
 
     };
-    private void goAtyLogin() {
+   /* private void goAtyLogin() {
         Intent intent=new Intent(WelcomeAty.this,Aty_LogIn.class);
         startActivity(intent);
         finish();
-    }
+    }*/
 
     private void goHome() {
         Intent intent=new Intent(WelcomeAty.this,HomeActivity.class);
