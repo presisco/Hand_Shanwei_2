@@ -10,8 +10,8 @@
 
     <style name="Widget.FloorInfo.CardView" parent="Widget">
         <item name="android:gravity">center</item>
-        <item name="android:layout_margin">@dimen/card_margin</item>
-        <item name="cardCornerRadius">8dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="cardCornerRadius">4dp</item>
         <item name="cardElevation">4dp</item>
         <item name="contentPadding">@dimen/card_padding</item>
         <item name="cardBackgroundColor">@color/default_background_color</item>
@@ -19,10 +19,19 @@
 
     <style name="Widget.SeatInfo.CardView" parent="Widget">
         <item name="android:gravity">center</item>
-        <item name="android:layout_margin">@dimen/card_margin</item>
-        <item name="cardCornerRadius">4dp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="cardCornerRadius">2dp</item>
         <item name="cardElevation">2dp</item>
-        <item name="contentPadding">@dimen/card_padding</item>
+        <item name="contentPadding">4dp</item>
+        <item name="cardBackgroundColor">@color/default_background_color</item>
+    </style>
+
+    <style name="Widget.BookInfo.CardView" parent="Widget">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="contentPadding">4dp</item>
         <item name="cardBackgroundColor">@color/default_background_color</item>
     </style>
 

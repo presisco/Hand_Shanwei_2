@@ -6,7 +6,8 @@
     android:id="@+id/bookInfoCardView">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -15,7 +16,7 @@
             android:id="@+id/bookNameTextView"
             android:layout_alignParentLeft="false"
             android:layout_alignParentStart="false"
-            android:textSize="@dimen/large_text"
+            android:textSize="@dimen/small_text"
             android:textStyle="bold" />
 
         <TextView
@@ -25,7 +26,7 @@
             android:id="@+id/bookIdTextView"
             android:layout_alignParentRight="false"
             android:layout_alignParentEnd="false"
-            android:textSize="@dimen/medium_text"
+            android:textSize="@dimen/small_text"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="false"
             android:layout_alignParentLeft="true"
@@ -38,7 +39,7 @@
             android:id="@+id/bookCountTextView"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textSize="@dimen/medium_text"
+            android:textSize="@dimen/small_text"
             android:layout_alignParentBottom="false"
             android:layout_alignBottom="@+id/bookNameTextView" />
 
@@ -52,7 +53,7 @@
             android:layout_toStartOf="@+id/bookCountTextView"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/bookIdTextView"
-            android:textSize="@dimen/small_text"
+            android:textSize="@dimen/very_small_text"
             android:layout_alignParentLeft="true" />
 
         <TextView
@@ -62,7 +63,7 @@
             android:id="@+id/bookPosTextView"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textSize="@dimen/very_large_text"
+            android:textSize="@dimen/medium_text"
             android:layout_alignBottom="@+id/bookAuthorTextView" />
 
         <ImageView

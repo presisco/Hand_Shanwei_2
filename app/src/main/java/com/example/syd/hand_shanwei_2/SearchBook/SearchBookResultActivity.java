@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,8 +30,7 @@ import java.util.List;
 /**
  * Created by syd on 2015/11/18.
  */
-public class SearchBookResultActivity extends AppCompatActivity implements View.OnClickListener {
-    private Intent intent;
+public class SearchBookResultActivity extends AppCompatActivity implements SearchBookResultAdapter.OnUpdateDataInterface{
 
     private Button mSecondarySearchBtn;
     private EditText mSecondarySearchEditText;
@@ -46,16 +47,17 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
     private String mPrimaryType;
     private String mSecondaryKeyWord;
     private String mSecondaryType;
+    private Boolean mIsPrimarySearch=true;
 
     private Integer mCurPage=0;
     private Integer mTotalPage=0;
+    private Integer lastVisibileItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_book_result);
 
-        intent=getIntent();
         mSecondarySearchEditText=(EditText)findViewById(R.id.bookSearchResultFilter);
         mSearchBookResultRecyclerView = (RecyclerView) findViewById(R.id.bookSearchResultRecyclerView);
         mSecondarySearchBtn= (Button) findViewById(R.id.bookSecondarySearchButton);
@@ -69,7 +71,10 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
                     case 1:mSecondaryType=SearchBookConst.SEARCH_TYPE_AUTHOR;break;
                     default:return;
                 }
-                new GetBookListSecondary().execute();
+                mIsPrimarySearch=false;
+                mCurPage=1;
+                Toast.makeText(SearchBookResultActivity.this, "正在查找", Toast.LENGTH_SHORT).show();
+                new GetBookList().execute();
             }
         });
 
@@ -80,87 +85,31 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
         mSearchTypeSpinner.setAdapter(mSearchTypeArrayAdapter);
         mSearchTypeSpinner.setSelection(0, true);
 
-        RecyclerView.LayoutManager mRecyclerViewLayoutManager = new LinearLayoutManager(this);
+        final RecyclerView.LayoutManager mRecyclerViewLayoutManager = new GridLayoutManager(this, 1);
         mSearchBookResultRecyclerView.setLayoutManager(mRecyclerViewLayoutManager);
-        mSearchBookResultAdapter=new SearchBookResultAdapter(new ArrayList<BookInfo>(),this);
+        mSearchBookResultAdapter = new SearchBookResultAdapter(new ArrayList<BookInfo>(), this, this);
+        mSearchBookResultAdapter.hideFooter();
         mSearchBookResultRecyclerView.setAdapter(mSearchBookResultAdapter);
 
         // 获得意图
-        Intent intent = getIntent();
         // 读取数据
+        Intent intent=getIntent();
         mPrimaryKeyWord = intent.getStringExtra(SearchBookConst.SEARCH_BOOK_KEY);
         mPrimaryType=intent.getStringExtra(SearchBookConst.SEARCH_TYPE);
         mCurPage=1;
-        new GetBookListPrimary().execute();
-
-//        if (code != 2) {
-//            queryBook = intent.getStringExtra("queryBook");
-//
-//            if (100 == code) {
-//                //thHost.setCurrentTab(0);
-//                TitleSearch = true;
-//                onceType = "title";
-//                bookListState.currPage = 0;
-//                new GetBookList().execute(queryBook, bookListState.currPage + 1
-//                        + "");
-//                Toast.makeText(SearchBookResultActivity.this, "如果对搜索结果不满意，可以在菜单中选择二次检索",Toast.LENGTH_SHORT).show();
-//
-//            } else if (200 == code) {
-////                thHost.setCurrentTab(0);
-//                AuthorSearch = true;
-//                onceType = "author";
-//                bookListState.currPage = 0;
-//                new GetBookList().execute(queryBook, bookListState.currPage + 1
-//                        + "");
-//                Toast.makeText(SearchBookResultActivity.this, "如果对搜索结果不满意，可以在菜单中选择二次检索",Toast.LENGTH_SHORT).show();
-//
-//            }
-//        } else {
-            // books = borrow.findAll();
-            // layerRecyclerView.setAdapter(layerAdapter);
-            // layerRecyclerView.invalidate();
-//            thHost.setCurrentTab(1);
-
-//        }
-        // 更改背景颜色
-        /*for (int i = 0; i < thHost.getTabWidget().getChildCount(); i++) {
-            TextView tv = (TextView) thHost.getTabWidget().getChildAt(i)
-                    .findViewById(android.R.id.title);
-            tv.setTextColor(Color.WHITE);
-            tv.setTypeface(Typeface.SERIF, 2);
-            tv.setTextSize(15);
-        }*/
-//        thHost.setOnTabChangedListener(new TabChangeListener()); // 设置tab界面跳转的监听，用于每个列表的数据的刷新操作
-        // //设置列表的长按监听，主要用于列表的删除操作
-//        layerRecyclerView.setOnItemLongClickListener(new ItOnItemLongClickListener());
-//        bookRecyclerView.setMode(Mode.PULL_FROM_END);// 设置刷新方式，底部刷新
-//        bookListState.currPage = 0;
-        // 刷新监听，只要图书没有加载到最后继续刷新
-       /* mSearchBookResultRecyclerView.setOnRefreshListener(new OnRefreshListener<RecyclerView>() {
-            public void onRefresh(PullToRefreshBase<RecyclerView> refreshView) {
-                if (bookListState.totalPage <= bookListState.currPage) {
-                    Toast.makeText(getApplicationContext(), "没有图书了",
-                            Toast.LENGTH_SHORT).show();
-                    new GetBookList().execute();
-                } else
-                    new GetBookList().execute(queryBook, bookListState.currPage + 1
-                            + "");
-            }
-        });*/
-
-
+        Toast.makeText(SearchBookResultActivity.this, "正在查找", Toast.LENGTH_SHORT).show();
+        new GetBookList().execute();
     }
 
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param v The view that was clicked.
-     */
     @Override
-    public void onClick(View v) {
+    public void onUpdate()
+    {
+        mCurPage+=1;
+        Toast.makeText(SearchBookResultActivity.this, "正在查找", Toast.LENGTH_SHORT).show();
+        new GetBookList().execute();
     }
 
-    private class GetBookListSecondary extends AsyncTask<String, Void, String> { // 加载检索结果
+    private class GetBookList extends AsyncTask<String, Void, String> { // 加载检索结果
         /**
          * 根据获取到的HTML文件进行解析，获取图书信息，并且在RecyclerView中得到显示
          */
@@ -169,10 +118,22 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
                 // 获取到图书信息，存储到book集合中
                 List<BookInfo> list = SearchBookService.getBookList(result);
                 if (list != null) {
-                    mSearchBookResultAdapter.appendData(list);
+                    if (mCurPage != 1) {
+                        mSearchBookResultAdapter.appendData(list);
+                    }
+                    else{
+                        mSearchBookResultAdapter.updateDataSet(list);
+                    }
+
+                    if (mCurPage == mTotalPage)
+                        mSearchBookResultAdapter.hideFooter();
+                    else
+                        mSearchBookResultAdapter.showFooter();
+
                     mSearchBookResultAdapter.notifyDataSetChanged();
                     mTotalPage =SearchBookService.getListState(result).totalPage; // 获取页数信息
                     mCurPage=SearchBookService.getListState(result).currPage;
+                    Log.d("SearchBookResult", "SecondarySearch Result Count:" + mSearchBookResultAdapter.getItemCount());
                 } else {
                     Toast.makeText(getApplicationContext(), "没有找到..",
                                 Toast.LENGTH_SHORT).show();
@@ -187,34 +148,11 @@ public class SearchBookResultActivity extends AppCompatActivity implements View.
          */
 
         protected String doInBackground(String... arg0) {
-            return SearchBookService.queryTwice(mPrimaryKeyWord, mPrimaryType, mSecondaryKeyWord,
-                    mSecondaryType, mCurPage+1);
-        }
-    }
-
-    private class GetBookListPrimary extends AsyncTask<String,Void,String>{
-
-        @Override
-        protected String doInBackground(String... params) {
-            return SearchBookService.getPage(mPrimaryKeyWord,"",mCurPage);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (result != null) {
-                // 获取到图书信息，存储到book集合中
-                List<BookInfo> list = SearchBookService.getBookList(result);
-                if (list != null) {
-                    mSearchBookResultAdapter.updateDataSet(list);
-                    mSearchBookResultAdapter.notifyDataSetChanged();
-                    mTotalPage =SearchBookService.getListState(result).totalPage; // 获取页数信息
-                    mCurPage=SearchBookService.getListState(result).currPage;
-                } else {
-                    Toast.makeText(getApplicationContext(), "没有找到..",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-            super.onPostExecute(result);
+            if (mIsPrimarySearch)
+                return SearchBookService.getPage(mPrimaryKeyWord, "", mCurPage);
+            else
+                return SearchBookService.queryTwice(mPrimaryKeyWord, mPrimaryType, mSecondaryKeyWord,
+                    mSecondaryType, mCurPage);
         }
     }
 }
