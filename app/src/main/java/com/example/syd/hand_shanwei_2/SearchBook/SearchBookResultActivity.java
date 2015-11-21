@@ -24,6 +24,11 @@ import com.example.syd.hand_shanwei_2.Model.BookInfo;
 import com.example.syd.hand_shanwei_2.Model.BookListState;
 import com.example.syd.hand_shanwei_2.R;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,15 +117,19 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
         /**
          * 根据获取到的HTML文件进行解析，获取图书信息，并且在RecyclerView中得到显示
          */
+
+        public List<BookInfo> list;
+
         protected void onPostExecute(String result) {
+            //mSearchBookResultRecyclerView.onRefreshComplete();
             if (result != null) {
                 // 获取到图书信息，存储到book集合中
-                List<BookInfo> list = SearchBookService.getBookList(result);
+
+                Log.d("SearchBookResult", "Book count at this page:" + list.size());
                 if (list != null) {
                     if (mCurPage != 1) {
                         mSearchBookResultAdapter.appendData(list);
-                    }
-                    else{
+                    } else {
                         mSearchBookResultAdapter.updateDataSet(list);
                     }
 
@@ -130,15 +139,14 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
                         mSearchBookResultAdapter.showFooter();
 
                     mSearchBookResultAdapter.notifyDataSetChanged();
-                    mTotalPage =SearchBookService.getListState(result).totalPage; // 获取页数信息
-                    mCurPage=SearchBookService.getListState(result).currPage;
+                    mTotalPage = SearchBookService.getListState(result).totalPage; // 获取页数信息
+                    mCurPage = SearchBookService.getListState(result).currPage;
                     Log.d("SearchBookResult", "SecondarySearch Result Count:" + mSearchBookResultAdapter.getItemCount());
                 } else {
                     Toast.makeText(getApplicationContext(), "没有找到..",
-                                Toast.LENGTH_SHORT).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
-            //mSearchBookResultRecyclerView.onRefreshComplete();
             super.onPostExecute(result);
         }
 
@@ -147,11 +155,14 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
          */
 
         protected String doInBackground(String... arg0) {
+            String result = "";
             if (mIsPrimarySearch)
-                return SearchBookService.getPage(mPrimaryKeyWord, "", mCurPage);
+                result = SearchBookService.getPage(mPrimaryKeyWord, mPrimaryType, mCurPage);
             else
-                return SearchBookService.queryTwice(mPrimaryKeyWord, mPrimaryType, mSecondaryKeyWord,
+                result = SearchBookService.queryTwice(mPrimaryKeyWord, mPrimaryType, mSecondaryKeyWord,
                     mSecondaryType, mCurPage);
+            list = SearchBookService.getBookList(result);
+            return result;
         }
     }
 }
