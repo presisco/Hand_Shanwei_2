@@ -3,8 +3,11 @@ package com.example.syd.hand_shanwei_2.HttpService.SearchBookService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.syd.hand_shanwei_2.HttpService.HttpTools;
 import com.example.syd.hand_shanwei_2.Model.BookInfo;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.LoggingPermission;
 
 /**
  * Created by syd on 2015/11/17.
@@ -81,6 +85,14 @@ public class SearchBookService extends Service {
         params.put("strSearchType", type);
         params.put("strText", title);
         params.put("page", page + "");
+        params.put("match_flag", "forward");
+        params.put("historyCount", "1");
+        params.put("with_ebook", "on");
+        params.put("displaypg", "20");
+        params.put("showmode", "list");
+        params.put("sort", "CATA_DATE");
+        params.put("orderby", "desc");
+        params.put("dept", "ALL");
         return HttpTools.getContent(
                 "http://202.194.40.71:8080/opac/openlink.php", params);
     }
@@ -91,15 +103,28 @@ public class SearchBookService extends Service {
      *            书目URL id
      * @return 楼层
      */
-    public static String getLayer(String marcno) throws Exception {
-        Document document = Jsoup.parse(new URL(
-                "http://202.194.40.71:8080/opac/ajax_item.php?marc_no="
-                        + marcno), 3000);
+
+    public static String getLayer(final String marcno) {
+        Document document = null;
+        try {
+            document = Jsoup.parse(new URL(
+                    "http://202.194.40.71:8080/opac/ajax_item.php?marc_no="
+                            + marcno), 3000);
+            Log.d("SearchBookService", "Requested URL:" + "http://202.194.40.71:8080/opac/ajax_item.php?marc_no="
+                    + marcno);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // 书籍信息所在行
         Element tr = document.getElementsByTag("tbody").get(0)
-                .getElementsByTag("tr").get(1);
+                .getElementsByTag("tr").get(1);/*
+        System.out.println(document.getElementsByTag("tbody"));
+        System.out.println("---------------------------------------------------------------");
+        System.out.println(document.getElementsByTag("tbody").get(0));
+        System.out.println("tr:" + tr);*/
         // 获取楼层单元格数据
         String layer = tr.getElementsByTag("td").get(3).text();
+        //System.out.println("layer:" + layer);
         // 去除文字
         if(layer.contains("文献建设部"))
             return layer.substring(5);
@@ -119,21 +144,21 @@ public class SearchBookService extends Service {
             return null;
         for (Element bookitem : booklist) {
             BookInfo book = new BookInfo();
-            book.name=bookitem.getElementsByTag("a").get(0).text()
+            book.name = bookitem.getElementsByTag("a").get(0).text()
                     .replaceFirst("\\d+\\.", "");
             book.code=bookitem.getElementsByTag("h3").get(0).ownText();
             book.detail=bookitem.getElementsByTag("p").get(0).ownText()
                     .replaceFirst("\\(\\d+\\)", "").trim();
             String temp = bookitem.getElementsByTag("p").get(0)
                     .getElementsByTag("span").get(0).ownText();
-            book.total=Integer.parseInt(temp
+            book.total = Integer.parseInt(temp
                     .substring(0, temp.indexOf("可借")).replace("馆藏复本：", "")
                     .trim());
-            book.rest=Integer.parseInt(temp.substring(temp.indexOf("可借"))
+            book.rest = Integer.parseInt(temp.substring(temp.indexOf("可借"))
                     .replace("可借复本：", "").trim());
-            book.marcno = bookitem.getElementsByTag("h3").get(0)
+            book.marcno = getLayer(bookitem.getElementsByTag("h3").get(0)
                     .getElementsByTag("a").get(0).attr("href")
-                    .replace("item.php?marc_no=", "");
+                    .replace("item.php?marc_no=", ""));
             result.add(book);
         }
         return result;
