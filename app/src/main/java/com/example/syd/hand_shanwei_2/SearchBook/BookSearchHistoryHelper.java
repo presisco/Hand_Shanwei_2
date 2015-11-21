@@ -25,7 +25,6 @@ public class BookSearchHistoryHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //**********************创建搜索历史表**************************
         db.execSQL("CREATE TABLE " + DB_TABLE_NAME + " ( " +
-                KEY_ROW_ID + " INTEGER PRIMARY KEY , " +
                 KEY_BOOK_NAME + " TEXT );");
     }
 
