@@ -468,7 +468,7 @@ public class OrderSeatService extends Service{
         List<FloorInfo> result = new ArrayList<FloorInfo>();
         Document doc = Jsoup.parse(content);
         Elements items = doc.getElementsByAttributeValue("data-theme", "c");
-        Log.d("#####", items.toString());
+//        Log.d("#####", items.toString());
         for (Element item : items) {
             FloorInfo info = new FloorInfo();
             info.layer = item.text().substring(0, item.text().indexOf(':'));

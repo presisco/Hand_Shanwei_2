@@ -65,15 +65,14 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab01layout, container, false);
-        //Test Data Gen
-       // mDataSet=new FloorInfo[0];
-        genTestData();
-        new DummyBackgroundTask().execute();
+        Log.d("BookSeatsCP", "onCreateView()");
 
-        if (isfirstin){
-            //mDataSet=new FloorInfo[12];
+        //Test Data Gen
+        if (isfirstin) {
+            mDataSet = new FloorInfo[0];
             initiateRefresh();
         }
+        Log.d("BookSeatsCP", "mDataSet.length:" + mDataSet.length);
         // Retrieve the SwipeRefreshLayout and ListView instances
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.curFloorsSwipeRefresh);
 
@@ -122,7 +121,8 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        genTestData();
+
+        Log.d("BookSeatsCP", "onViewCreated()");
 
         // BEGIN_INCLUDE (setup_refreshlistener)
         /**
@@ -138,7 +138,6 @@ public class BookSeatsContentPage extends Fragment{
             @Override
             public void onRefresh() {
                 Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
-
                 initiateRefresh();
             }
         });
@@ -148,7 +147,7 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-
+        Log.d("BookSeatsCP", "onResume");
     }
     private void initiateRefresh() {
         //Log.i(LOG_TAG, "initiateRefresh");
@@ -243,17 +242,6 @@ public class BookSeatsContentPage extends Fragment{
 
     }
 
-    private void genTestData() {
-        this.mDataSet =new FloorInfo[12];
-        if (isfirstin) {
-            for (int i = 0; i < 12;i++) {
-               mDataSet[i] = new FloorInfo();
-                mDataSet[i].layer = i + " Fl";
-                mDataSet[i].total = 100;
-                mDataSet[i].rest = 100;
-            }
-        }
-    }
     Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
