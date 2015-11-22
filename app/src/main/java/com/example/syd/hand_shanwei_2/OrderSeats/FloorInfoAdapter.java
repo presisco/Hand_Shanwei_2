@@ -78,7 +78,6 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
         }
         TextView op2 = (TextView) viewHolder.getCardView().findViewById(R.id.bookIdTextView);
         if (op2!=null){
-
         op2.setText(parent.getResources().getString(R.string.floor_info_cap)+mDataSet[position].total);
         }
         TextView op3 = (TextView) viewHolder.getCardView().findViewById(R.id.bookCountTextView);

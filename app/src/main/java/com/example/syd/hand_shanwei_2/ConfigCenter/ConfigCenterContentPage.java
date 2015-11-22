@@ -106,7 +106,11 @@ public class ConfigCenterContentPage extends Fragment implements View.OnClickLis
             }else {
                 startActivity(new Intent(getActivity(), Aty_LogIn.class));
             }
-        }else {
+        }else if (v.getId()==R.id.tv_btn_about_ours_){
+
+                startActivity(new Intent(getActivity(),SeeAboutOur.class));
+        }
+        else {
             if (haslogin) {
                 switch (v.getId()) {
                     case R.id.btn_see_order_record:
@@ -115,9 +119,7 @@ public class ConfigCenterContentPage extends Fragment implements View.OnClickLis
                     case R.id.btn_see_collect_book_route:
                         startActivity(new Intent(getActivity(),SeeBookRouteCollect.class));
                         break;
-                    case R.id.tv_btn_about_ours_:
-                        startActivity(new Intent(getActivity(),SeeAboutOur.class));
-                        break;
+
                 }
             }else {
                 Log.i("bac","未登录");

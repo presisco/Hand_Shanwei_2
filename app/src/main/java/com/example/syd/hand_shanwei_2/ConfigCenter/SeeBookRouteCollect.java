@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ListView;
 
+import com.example.syd.hand_shanwei_2.Adapters.MyBookRootListViewAdapter;
 import com.example.syd.hand_shanwei_2.R;
 
 /**
@@ -12,6 +14,8 @@ import com.example.syd.hand_shanwei_2.R;
  */
 public class SeeBookRouteCollect extends AppCompatActivity {
     private ActionBar actionBar;
+    private MyBookRootListViewAdapter myBookRootListViewAdapter;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +23,9 @@ public class SeeBookRouteCollect extends AppCompatActivity {
         setContentView(R.layout.see_collected_book_route);
         actionBar.setTitle("借书收藏路线");
         actionBar.setDisplayHomeAsUpEnabled(true);
+        listView= (ListView) findViewById(R.id.seebookroutelistview);
+        myBookRootListViewAdapter=new MyBookRootListViewAdapter(this);
+        listView.setAdapter(myBookRootListViewAdapter);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

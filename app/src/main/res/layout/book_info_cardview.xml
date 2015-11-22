@@ -149,16 +149,24 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:id="@+id/bookMapImageView"
-                android:background="#ff0000"
                 android:layout_height="40dp"
+                android:background="@drawable/map"
+                android:layout_marginLeft="30dp"
                 android:layout_below="@+id/bookAuthorTextView" />
-            <ImageView
+            <TextView
                 android:layout_width="0dp"
-                android:background="#00ff00"
-                android:layout_height="40dp"
-                android:layout_weight="3"
-                android:id="@+id/bookMarkImageView"
-                 />
+                android:layout_weight="5"
+                android:layout_height="fill_parent" />
+
+            <ToggleButton
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/add_on"
+                android:layout_height="fill_parent"
+                android:id="@+id/btnsavemap"
+                android:layout_marginRight="10dp"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

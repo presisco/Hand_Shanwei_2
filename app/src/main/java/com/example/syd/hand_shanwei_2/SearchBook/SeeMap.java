@@ -22,7 +22,7 @@ public class SeeMap extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         actionBar=getSupportActionBar();
-        setContentView(R.layout.seemaplayout);
+        setContentView(R.layout.see_map_layout);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("地图");
         map= (ImageView) findViewById(R.id.imgshowmap);

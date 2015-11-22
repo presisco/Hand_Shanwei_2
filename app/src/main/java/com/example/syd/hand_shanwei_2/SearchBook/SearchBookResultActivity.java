@@ -166,7 +166,7 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
             if (result != null) {
                 // 获取到图书信息，存储到book集合中
 
-                Log.d("SearchBookResult", "Book count at this page:" + list.size());
+//                Log.d("SearchBookResult", "Book count at this page:" + list.size());
                 if (list != null) {
                     if (mCurPage != 1) {
                         mSearchBookResultAdapter.appendData(list);

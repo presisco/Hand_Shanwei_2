@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.syd.hand_shanwei_2.Model.BookInfo;
 import com.example.syd.hand_shanwei_2.R;
@@ -140,11 +142,25 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             //点击"收藏"的响应
-            ((ImageView) cardView.findViewById(R.id.bookMarkImageView)).setOnClickListener(new View.OnClickListener() {
+            final ToggleButton toggleButton=(ToggleButton) cardView.findViewById(R.id.btnsavemap);
+            toggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+            BookRouteHistoryHelper bookRouteHistoryHelper = new BookRouteHistoryHelper(parent);
+                    if (toggleButton.isChecked()){
+                    toggleButton.setBackgroundResource(R.drawable.add_down);
+                        boolean b=bookRouteHistoryHelper.insertBookRoute(mDataSet.get(position).name,mDataSet.get(position).code,mDataSet.get(position).detail,mDataSet.get(position).marcno);
+                        if (b){
+                            Toast.makeText(parent,"收藏路线",Toast.LENGTH_SHORT).show();
+                        }
+                        Log.i("bac", "搜藏" + b);
+                    }else {
+                        Toast.makeText(parent,"取消收藏",Toast.LENGTH_SHORT).show();
+                        toggleButton.setBackgroundResource(R.drawable.add_on);
+                        bookRouteHistoryHelper.deleteBookRoute(mDataSet.get(position).code);
+                    }
                     // TODO: 2015/11/22
-                    Log.i("bac","搜藏");
+
                 }
             });
         }
