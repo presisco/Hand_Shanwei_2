@@ -1,5 +1,7 @@
 package com.example.syd.hand_shanwei_2.SearchBook;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,12 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.syd.hand_shanwei_2.HttpService.SearchBookService.SearchBookService;
@@ -30,8 +33,9 @@ import java.util.List;
 public class SearchBookResultActivity extends AppCompatActivity implements SearchBookResultAdapter.OnUpdateDataInterface{
     private ActionBar actionBar;
     private Button mSecondarySearchBtn;
-    private EditText mSecondarySearchEditText;
-    private Spinner mSearchTypeSpinner;
+    //    private EditText mSecondarySearchEditText;
+//    private Spinner mSearchTypeSpinner;
+    private ImageView mBackButtonImageView;
     private ArrayAdapter<String> mSearchTypeArrayAdapter;
     //结果页面状态
     private BookListState bookListState;
@@ -54,35 +58,77 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         actionBar=getSupportActionBar();
-        setContentView(R.layout.search_book_result);
+        setContentView(R.layout.search_book_result_2);
         actionBar.setTitle("查找书籍");
         actionBar.setDisplayHomeAsUpEnabled(true);
-        mSecondarySearchEditText=(EditText)findViewById(R.id.bookSearchResultFilter);
+//        mSecondarySearchEditText=(EditText)findViewById(R.id.bookSearchResultFilter);
         mSearchBookResultRecyclerView = (RecyclerView) findViewById(R.id.bookSearchResultRecyclerView);
-        mSecondarySearchBtn= (Button) findViewById(R.id.bookSecondarySearchButton);
+        mSecondarySearchBtn = (Button) findViewById(R.id.bookSecondarySearchButton2);
+//        mSecondarySearchBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mSecondaryKeyWord = mSecondarySearchEditText.getText().toString().trim();
+//                switch(mSearchTypeSpinner.getSelectedItemPosition())
+//                {
+//                    case 0:mSecondaryType= SearchBookConst.SEARCH_TYPE_BOOKNAME;break;
+//                    case 1:mSecondaryType= SearchBookConst.SEARCH_TYPE_AUTHOR;break;
+//                    default:return;
+//                }
+//                mIsPrimarySearch=false;
+//                mCurPage=1;
+//                Toast.makeText(SearchBookResultActivity.this, "正在查找", Toast.LENGTH_SHORT).show();
+//                new GetBookList().execute();
+//            }
+//        });
+
         mSecondarySearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSecondaryKeyWord = mSecondarySearchEditText.getText().toString().trim();
-                switch(mSearchTypeSpinner.getSelectedItemPosition())
-                {
-                    case 0:mSecondaryType= SearchBookConst.SEARCH_TYPE_BOOKNAME;break;
-                    case 1:mSecondaryType= SearchBookConst.SEARCH_TYPE_AUTHOR;break;
-                    default:return;
-                }
-                mIsPrimarySearch=false;
-                mCurPage=1;
-                Toast.makeText(SearchBookResultActivity.this, "正在查找", Toast.LENGTH_SHORT).show();
-                new GetBookList().execute();
+                AlertDialog.Builder builder = new AlertDialog.Builder(SearchBookResultActivity.this);
+                LayoutInflater li = SearchBookResultActivity.this.getLayoutInflater();
+                final View view = li.inflate(R.layout.secondary_search_dialog, null);
+                builder.setView(view)
+                        .setPositiveButton(R.string.book_name, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                mSecondaryType = SearchBookConst.SEARCH_TYPE_BOOKNAME;
+                                mSecondaryKeyWord = ((EditText) view.findViewById(R.id.keyWordEditText))
+                                        .getText().toString().trim();
+                                mIsPrimarySearch = false;
+                                mCurPage = 1;
+                                Toast.makeText(SearchBookResultActivity.this, "正在查找", Toast.LENGTH_SHORT).show();
+                                new GetBookList().execute();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton(R.string.book_author, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mSecondaryType = SearchBookConst.SEARCH_TYPE_AUTHOR;
+                                mSecondaryKeyWord = ((EditText) view.findViewById(R.id.keyWordEditText))
+                                        .getText().toString().trim();
+                                mIsPrimarySearch = false;
+                                mCurPage = 1;
+                                Toast.makeText(SearchBookResultActivity.this, "正在查找", Toast.LENGTH_SHORT).show();
+                                new GetBookList().execute();
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
-
+        mBackButtonImageView = (ImageView) findViewById(R.id.SearchResultBackImageView);
+        mBackButtonImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         final String type_item[] = {getResources().getString(R.string.book_name),
                 getResources().getString(R.string.book_author)};
         mSearchTypeArrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, type_item);
-        mSearchTypeSpinner=(Spinner)findViewById(R.id.filtOptionSpinner);
-        mSearchTypeSpinner.setAdapter(mSearchTypeArrayAdapter);
-        mSearchTypeSpinner.setSelection(0, true);
+//        mSearchTypeSpinner=(Spinner)findViewById(R.id.filtOptionSpinner);
+//        mSearchTypeSpinner.setAdapter(mSearchTypeArrayAdapter);
+//        mSearchTypeSpinner.setSelection(0, true);
 
         final RecyclerView.LayoutManager mRecyclerViewLayoutManager = new GridLayoutManager(this, 1);
         mSearchBookResultRecyclerView.setLayoutManager(mRecyclerViewLayoutManager);

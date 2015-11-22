@@ -214,7 +214,6 @@ public class BookSeatsContentPage extends Fragment{
                 floorInfos=OrderSeatService.getFloorInfo(userinfoUtils.get_LastId(),userinfoUtils.get_LastPassword());
                 }else {
                 floorInfos=OrderSeatService.getFloorInfo("201100800169","011796");
-
                 }
                 isfirstin=false;
                 mDataSet=new FloorInfo[12];
