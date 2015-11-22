@@ -1,4 +1,4 @@
-package com.example.syd.hand_shanwei_2.BookSeats;
+package com.example.syd.hand_shanwei_2.OrderSeats;
 
 import android.content.Context;
 import android.content.Intent;

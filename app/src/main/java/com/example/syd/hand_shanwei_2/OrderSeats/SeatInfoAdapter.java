@@ -1,4 +1,4 @@
-package com.example.syd.hand_shanwei_2.BookSeats;
+package com.example.syd.hand_shanwei_2.OrderSeats;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.syd.hand_shanwei_2.Model.FloorInfo;
 import com.example.syd.hand_shanwei_2.Model.SeatInfo;
 import com.example.syd.hand_shanwei_2.R;
 
@@ -119,7 +118,6 @@ public class SeatInfoAdapter extends RecyclerView.Adapter<SeatInfoAdapter.ViewHo
     public int getItemCount() {
         return mDataSet.length;
     }
-
     public SeatInfo getSelectedSeat()
     {
         return mSelectedSeat;

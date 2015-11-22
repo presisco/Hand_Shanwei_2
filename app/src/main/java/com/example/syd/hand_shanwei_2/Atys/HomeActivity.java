@@ -50,8 +50,6 @@ public class HomeActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -102,7 +100,7 @@ public class HomeActivity extends FragmentActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
                 startActivity(intent);
-                wifiManager.setWifiEnabled(true);
+                //wifiManager.setWifiEnabled(true);
             }
         });
 

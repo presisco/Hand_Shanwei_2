@@ -204,8 +204,47 @@ public class OrderSeatService extends Service{
            //本地储存信息
             //OrderInfoUtil orderInfoUtil=new OrderInfoUtil(contex);
             //orderInfoUtil.refreshOrderInfo(room.charAt(room.length() - 1)+"",sitNo,date);
-            String s=room.charAt(room.length() - 1) +","+sitNo+","+date;
-            //保存预约记录
+            String s=null;
+            switch (index){
+                case 0:
+                    s=3+","+sitNo+","+date;
+                    break;
+                case 1:
+                    s=4+","+sitNo+","+date;
+                    break;
+                case 2:
+                    s=5+","+sitNo+","+date;
+                    break;
+                case 3:
+                    s=6+","+sitNo+","+date;
+                    break;
+                case 4:
+                    s=7+","+sitNo+","+date;
+                    break;
+                case 5:
+                    s=8+","+sitNo+","+date;
+                    break;
+                case 6:
+                    s=9+","+sitNo+","+date;
+                    break;
+                case 7:
+                    s=10+","+sitNo+","+date;
+                    break;
+                case 8:
+                    s=11+","+sitNo+","+date;
+                    break;
+                case 9:
+                    s=12+","+sitNo+","+date;
+                    break;
+                case 10:
+                    s="图东环楼三"+","+sitNo+","+date;
+                    break;
+                case 11:
+                    s="图东环楼四"+","+sitNo+","+date;
+                    break;
+            }
+//            String s=room.charAt(room.length() - 1) +","+sitNo+","+date;
+
             return s;
         }
 

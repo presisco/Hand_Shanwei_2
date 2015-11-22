@@ -1,4 +1,4 @@
-package com.example.syd.hand_shanwei_2.BookSeats;
+package com.example.syd.hand_shanwei_2.OrderSeats;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,7 +19,7 @@ public class OrderSeatHistoryHelper extends SQLiteOpenHelper {
     //数据库名
     private static final String DB_NAME="Order_Seat_History.db";
     //表名
-    private static final String TABLE_NAME="OrderSeatHistory";
+    private static final String TABLE_NAME="SeeOrderSeatHistory";
     //行id，安卓一般以_id开始
     private static final String KEY_ROW_ID="_id";
     //列名，本数据库包括三列
@@ -93,8 +93,8 @@ public class OrderSeatHistoryHelper extends SQLiteOpenHelper {
             ArrayList<OrderInfo> orderInfos=new ArrayList<>();
             SQLiteDatabase sqLiteDatabase=getReadableDatabase();
         //按时间先后排序获取
-        Cursor cursor=sqLiteDatabase.query(TABLE_NAME, new String[]{KEY_FLOOR, KEY_SEAT_NUM,KEY_TIME}, null, null, null, null,KEY_TIME);
-        for (cursor.moveToFirst();!(cursor.isAfterLast());cursor.moveToNext()) {
+        Cursor cursor=sqLiteDatabase.query(TABLE_NAME, new String[]{KEY_FLOOR, KEY_SEAT_NUM,KEY_TIME}, null, null, null, null,null);
+        for (cursor.moveToLast();!(cursor.isBeforeFirst());cursor.moveToPrevious()) {
             OrderInfo orderInfo=new OrderInfo();
             orderInfo.setRoom(cursor.getString(cursor.getColumnIndex(KEY_FLOOR)));
             orderInfo.setSeatNum(cursor.getString(cursor.getColumnIndex(KEY_SEAT_NUM)));

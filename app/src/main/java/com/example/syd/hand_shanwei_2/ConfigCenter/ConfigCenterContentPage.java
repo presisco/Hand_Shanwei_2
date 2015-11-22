@@ -1,52 +1,31 @@
 package com.example.syd.hand_shanwei_2.ConfigCenter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.LoaderManager;
-import android.content.AsyncQueryHandler;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioButton;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.syd.hand_shanwei_2.Atys.Aty_LogIn;
+import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
 import com.example.syd.hand_shanwei_2.R;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Presisco on 2015/9/28.
  */
-public class ConfigCenterContentPage extends Fragment{
+public class ConfigCenterContentPage extends Fragment implements View.OnClickListener {
 
     private static final String LOG_TAG = ConfigCenterContentPage.class.getSimpleName();
-
+    TextView id_tv,orderhistory,bookroute,aboutour;
+    Button btnlog_in_out;
+    private boolean haslogin=false;
+    UserinfoUtils userinfoUtils;
     public static Fragment newInstance() {
         ConfigCenterContentPage fragment = new ConfigCenterContentPage();
         return fragment;
@@ -67,6 +46,16 @@ public class ConfigCenterContentPage extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab03layout, container, false);
+        id_tv= (TextView) view.findViewById(R.id.id_tv);
+        //id_tv.setOnClickListener(this);
+        orderhistory= (TextView) view.findViewById(R.id.btn_see_order_record);
+        orderhistory.setOnClickListener(this);
+        bookroute= (TextView) view.findViewById(R.id.btn_see_collect_book_route);
+        bookroute.setOnClickListener(this);
+        btnlog_in_out= (Button) view.findViewById(R.id.btn_log_in_out);
+        btnlog_in_out.setOnClickListener(this);
+        aboutour= (TextView) view.findViewById(R.id.tv_btn_about_ours_);
+        aboutour.setOnClickListener(this);
         return view;
     }
     /**
@@ -77,10 +66,75 @@ public class ConfigCenterContentPage extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //先判断是否登陆
+        userinfoUtils=new UserinfoUtils(getActivity());
+        haslogin=userinfoUtils.get_Login_Status();
+        Log.i("bac",haslogin+"是否登陆");
+        if (haslogin){
+            btnlog_in_out.setText("退出登录");
+            id_tv.setText("学号："+userinfoUtils.get_LastId());
 
+        }else {
+
+        Log.i("bac", haslogin + "是否登陆");
+            btnlog_in_out.setText("登录");
+            id_tv.setText("学号："+"未登录");
+        }
     }
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+        if (v.getId()==R.id.btn_log_in_out){
+            Log.i("bac","8888888");
+            if (haslogin){
+                Log.i("bac","8888888");
+                logout();
+            }else {
+                startActivity(new Intent(getActivity(), Aty_LogIn.class));
+            }
+        }else {
+            if (haslogin) {
+                switch (v.getId()) {
+                    case R.id.btn_see_order_record:
+                        startActivity(new Intent(getActivity(),SeeOrderSeatHistory.class));
+                        break;
+                    case R.id.btn_see_collect_book_route:
+                        startActivity(new Intent(getActivity(),SeeBookRouteCollect.class));
+                        break;
+                    case R.id.tv_btn_about_ours_:
+                        startActivity(new Intent(getActivity(),SeeAboutOur.class));
+                        break;
+                }
+            }else {
+                Log.i("bac","未登录");
+                Toast.makeText(getActivity(),"请先登录！",Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
+    /**
+    * 退出登录
+     * */
+    private void logout() {
+        Log.i("bac","退出登录");
+        userinfoUtils.refresh_Login_Status(false);
+        userinfoUtils.unsave_CureentLogin_Info();
+        new AlertDialog.Builder(getActivity()).setTitle("退出登录").setMessage("退出登录成功！").setNegativeButton("放回", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                // TODO: 2015/11/20 页面重绘
+            }
+        }).show();
     }
 }

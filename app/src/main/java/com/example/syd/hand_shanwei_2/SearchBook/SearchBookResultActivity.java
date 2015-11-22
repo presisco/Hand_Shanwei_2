@@ -5,30 +5,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.syd.hand_shanwei_2.BookSeats.SeatInfoAdapter;
 import com.example.syd.hand_shanwei_2.HttpService.SearchBookService.SearchBookService;
 import com.example.syd.hand_shanwei_2.Model.BookInfo;
 import com.example.syd.hand_shanwei_2.Model.BookListState;
 import com.example.syd.hand_shanwei_2.R;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +33,7 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
     private ArrayAdapter<String> mSearchTypeArrayAdapter;
     //结果页面状态
     private BookListState bookListState;
+
     //搜索结果列表
     private SearchBookResultAdapter mSearchBookResultAdapter;
     private RecyclerView mSearchBookResultRecyclerView;
@@ -71,8 +62,8 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
                 mSecondaryKeyWord = mSecondarySearchEditText.getText().toString().trim();
                 switch(mSearchTypeSpinner.getSelectedItemPosition())
                 {
-                    case 0:mSecondaryType=SearchBookConst.SEARCH_TYPE_BOOKNAME;break;
-                    case 1:mSecondaryType=SearchBookConst.SEARCH_TYPE_AUTHOR;break;
+                    case 0:mSecondaryType= SearchBookConst.SEARCH_TYPE_BOOKNAME;break;
+                    case 1:mSecondaryType= SearchBookConst.SEARCH_TYPE_AUTHOR;break;
                     default:return;
                 }
                 mIsPrimarySearch=false;
@@ -160,7 +151,7 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
                 result = SearchBookService.getPage(mPrimaryKeyWord, mPrimaryType, mCurPage);
             else
                 result = SearchBookService.queryTwice(mPrimaryKeyWord, mPrimaryType, mSecondaryKeyWord,
-                    mSecondaryType, mCurPage);
+                        mSecondaryType, mCurPage);
             list = SearchBookService.getBookList(result);
             return result;
         }

@@ -1,27 +1,25 @@
 package com.example.syd.hand_shanwei_2.HttpService.SearchBookService;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.syd.hand_shanwei_2.HttpService.HttpTools;
 import com.example.syd.hand_shanwei_2.Model.BookInfo;
 import com.example.syd.hand_shanwei_2.Model.BookListState;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.LoggingPermission;
 
 /**
  * Created by syd on 2015/11/17.

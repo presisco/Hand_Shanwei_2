@@ -16,11 +16,11 @@ public class BookSearchHistoryHelper extends SQLiteOpenHelper {
     public static final String KEY_ROW_ID="_id";
     public static final String KEY_BOOK_NAME="bookname";
 
-
     public BookSearchHistoryHelper(Context context,SQLiteDatabase.CursorFactory factory,int version)
     {
         super(context,DB_NAME,factory,version);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         //**********************创建搜索历史表**************************
@@ -48,6 +48,7 @@ public class BookSearchHistoryHelper extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
     public void addSearchHistory(String newHistory)
     {
         SQLiteDatabase db=getWritableDatabase();

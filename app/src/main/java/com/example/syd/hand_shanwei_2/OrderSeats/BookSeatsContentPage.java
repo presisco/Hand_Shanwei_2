@@ -1,4 +1,4 @@
-package com.example.syd.hand_shanwei_2.BookSeats;
+package com.example.syd.hand_shanwei_2.OrderSeats;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -25,7 +25,6 @@ import com.example.syd.hand_shanwei_2.Model.FloorInfo;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 /**
@@ -67,7 +66,8 @@ public class BookSeatsContentPage extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab01layout, container, false);
         //Test Data Gen
-        mDataSet=new FloorInfo[0];
+       // mDataSet=new FloorInfo[0];
+        genTestData();
         new DummyBackgroundTask().execute();
 
         if (isfirstin){

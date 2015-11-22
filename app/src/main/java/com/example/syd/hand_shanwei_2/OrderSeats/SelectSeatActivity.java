@@ -1,4 +1,4 @@
-package com.example.syd.hand_shanwei_2.BookSeats;
+package com.example.syd.hand_shanwei_2.OrderSeats;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -66,6 +66,8 @@ public class SelectSeatActivity extends Activity{
                                 "图东环楼三楼", "图东环楼四楼"};
     private boolean randomOrder=false;
     Intent intent;
+
+    private TextView mNoSeatWarn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,9 +152,9 @@ public class SelectSeatActivity extends Activity{
                     nofloorselectedtv.setVisibility(View.VISIBLE);
                 } else {
                     randomOrder=false;
-                    mSeatRecyclerView.setVisibility(View.VISIBLE);
+                    mSeatRecyclerView.setVisibility(View.INVISIBLE);
                     nofloorselectedtv.setVisibility(View.GONE);
-//                    Toast.makeText(SelectSeatActivity.this,getResources().getString(R.string.loading),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SelectSeatActivity.this,getResources().getString(R.string.loading),Toast.LENGTH_SHORT).show();
                     new DummyBackgroundTask().execute();
                 }
             }
@@ -181,15 +183,23 @@ public class SelectSeatActivity extends Activity{
             Log.d("SelectSeatActivity","PreSelected:pos="+arrayAdapter.getPosition(mSelectedFloorName)
                     +" name="+mSelectedFloorName);
         }
+
+        mNoSeatWarn=(TextView)findViewById(R.id.noSeatTextView);
+        mNoSeatWarn.setVisibility(View.INVISIBLE);
     }
 
-    private void onRefreshComplete()
-    {
-        mSeatInfoAdapter.updateDataSet(mDataSet);
-        mSeatInfoAdapter.notifyDataSetChanged();
-//        Toast.makeText(SelectSeatActivity.this,getResources().getString(R.string.load_complete),Toast.LENGTH_SHORT).show();
+    private void onRefreshComplete() {
+        if (mDataSet.length < 1) {
+            mNoSeatWarn.setVisibility(View.VISIBLE);
+            mSeatRecyclerView.setVisibility(View.INVISIBLE);
+        } else {
+            mNoSeatWarn.setVisibility(View.INVISIBLE);
+            mSeatRecyclerView.setVisibility(View.VISIBLE);
+            mSeatInfoAdapter.updateDataSet(mDataSet);
+            mSeatInfoAdapter.notifyDataSetChanged();
+        }
+        Toast.makeText(SelectSeatActivity.this,getResources().getString(R.string.load_complete),Toast.LENGTH_SHORT).show();
     }
-
     private class DummyBackgroundTask extends AsyncTask<Void, Void, Integer> {
 
         @Override

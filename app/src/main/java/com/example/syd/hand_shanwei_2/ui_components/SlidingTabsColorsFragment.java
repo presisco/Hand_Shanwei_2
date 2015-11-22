@@ -17,12 +17,10 @@
 package com.example.syd.hand_shanwei_2.ui_components;
 
 import com.example.syd.hand_shanwei_2.R;
-import com.example.syd.hand_shanwei_2.BookSeats.BookSeatsContentPage;
+import com.example.syd.hand_shanwei_2.OrderSeats.BookSeatsContentPage;
 import com.example.syd.hand_shanwei_2.ConfigCenter.ConfigCenterContentPage;
 import com.example.syd.hand_shanwei_2.SearchBook.SearchBookContentPage;
-import com.example.syd.hand_shanwei_2.ui_components.SlidingTabLayout;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -120,28 +118,23 @@ public class SlidingTabsColorsFragment extends Fragment {
          * Populate our tab list with tabs. Each item contains a title, indicator color and divider
          * color, which are used by {@link SlidingTabLayout}.
          */
-
         //添加预约座位Fragment
         mTabs.add(new SamplePagerItem(getResources().getString(R.string.book_seats_title), // Title
                 Color.RED, // Indicator color
                 Color.GRAY,// Divider color
                 BookSeatsContentPage.newInstance()));
-
         //添加查找书籍Fragment
         mTabs.add(new SamplePagerItem(getResources().getString(R.string.search_book_title),
                 getResources().getColor(R.color.search_book_stripe_color),
                 Color.GRAY,
                 SearchBookContentPage.newInstance()));
-
         //添加个人中心Fragment
-        mTabs.add(new SamplePagerItem(getResources().getString(R.string.search_book_title),
+        mTabs.add(new SamplePagerItem(getResources().getString(R.string.config_center_title),
                 getResources().getColor(R.color.config_center_stripe_color),
                 Color.GRAY,
                 ConfigCenterContentPage.newInstance()));
-
         // END_INCLUDE (populate_tabs)
     }
-
     /**
      * Inflates the {@link View} which will be displayed by this {@link Fragment}, from the app's
      * resources.

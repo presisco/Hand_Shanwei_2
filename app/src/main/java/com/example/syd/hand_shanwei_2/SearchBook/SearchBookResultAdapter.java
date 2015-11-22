@@ -1,9 +1,8 @@
 package com.example.syd.hand_shanwei_2.SearchBook;
 
 import android.content.Context;
-import android.support.v7.internal.view.menu.ListMenuItemView;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,8 @@ import com.example.syd.hand_shanwei_2.Model.BookInfo;
 import com.example.syd.hand_shanwei_2.R;
 
 import java.util.List;
+
+;
 
 /**
  * Created by presisco on 2015/11/19.
@@ -128,6 +129,8 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((ImageView) cardView.findViewById(R.id.bookMapImageView)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // TODO: 2015/11/22
+                    Log.i("bac","地图");
 
                 }
             });
@@ -135,6 +138,8 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((ImageView) cardView.findViewById(R.id.bookMarkImageView)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // TODO: 2015/11/22
+                    Log.i("bac","搜藏");
 
                 }
             });
@@ -160,7 +165,6 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         else
             return mDataSet.size();
     }
-
     @Override
     public int getItemViewType(int position){
         if(position+1==getItemCount())

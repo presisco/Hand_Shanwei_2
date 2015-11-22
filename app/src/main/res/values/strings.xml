@@ -29,5 +29,10 @@
     <string name="secondary_search_hint">提示:按返回键重新搜索</string>
     <string name="book_name">书名</string>
     <string name="book_author">作者</string>
-    <string name="recycler_update_footer">点击加载下一页</string>
+    <string name="current_order">当前预约</string>
+    <string name="time">时间</string>
+    <string name="position">位置</string>
+    <string name="recycler_update_footer">点击下载下一页</string>
+    <string name="load_complete">加载完成</string>
+    <string name="loading">正在加载</string>
 </resources>

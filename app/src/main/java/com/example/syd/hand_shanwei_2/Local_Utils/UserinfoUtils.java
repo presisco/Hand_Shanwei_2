@@ -41,6 +41,12 @@ public class UserinfoUtils {
         editor.putString(USERPASSWORD,password);
         editor.commit();
     }
+    //存储当前用户名和密码
+    public void unsave_CureentLogin_Info(){
+        editor.putString(USERID,null);
+        editor.putString(USERPASSWORD,null);
+        editor.commit();
+    }
     //获取上一次登陆的用户账号
     public String get_LastId(){
         return sharedPreferences.getString(USERID,null);

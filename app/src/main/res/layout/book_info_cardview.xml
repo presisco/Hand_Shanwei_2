@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/bookInfoCardView">
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
@@ -37,11 +37,10 @@
             android:layout_height="wrap_content"
             android:text="剩余0本,共3本"
             android:id="@+id/bookCountTextView"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             android:textSize="@dimen/small_text"
-            android:layout_alignParentBottom="false"
-            android:layout_alignBottom="@+id/bookNameTextView" />
+            android:layout_alignBottom="@+id/bookAuthorTextView"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -61,10 +60,10 @@
             android:layout_height="wrap_content"
             android:text="三楼"
             android:id="@+id/bookPosTextView"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:textSize="@dimen/medium_text"
-            android:layout_alignBottom="@+id/bookAuthorTextView" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <ImageView
             android:layout_width="180dp"
@@ -84,5 +83,82 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="false" />
-    </RelativeLayout>
+    </RelativeLayout>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="fill_parent"
+                android:text="失控"
+                android:id="@+id/bookNameTextView"
+                android:textSize="@dimen/small_text"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="fill_parent"
+                android:text="三楼"
+                android:id="@+id/bookPosTextView"
+                android:textSize="@dimen/medium_text"
+               />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="G303-49/10"
+                android:id="@+id/bookIdTextView"
+                android:textSize="@dimen/small_text"
+                android:layout_below="@+id/bookNameTextView" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="fill_parent"
+                android:text="(美)凯文*凯丽著 新星出版社 2010"
+                android:id="@+id/bookAuthorTextView"
+                android:textSize="@dimen/very_small_text" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:text="剩余0本,共3本"
+                android:layout_weight="2"
+                android:id="@+id/bookCountTextView"
+                android:textSize="@dimen/small_text"
+                android:layout_alignBottom="@+id/bookAuthorTextView"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:id="@+id/bookMapImageView"
+                android:background="#ff0000"
+                android:layout_height="40dp"
+                android:layout_below="@+id/bookAuthorTextView" />
+            <ImageView
+                android:layout_width="0dp"
+                android:background="#00ff00"
+                android:layout_height="40dp"
+                android:layout_weight="3"
+                android:id="@+id/bookMarkImageView"
+                 />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

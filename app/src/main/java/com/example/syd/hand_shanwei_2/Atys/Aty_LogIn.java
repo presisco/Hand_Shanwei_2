@@ -82,7 +82,7 @@ public class Aty_LogIn extends AppCompatActivity {
                 } else {
                     Login_Util login_util = new Login_Util();
                     boolean status = login_util.login(id, ps);
-                    if (status) {
+                    if (!status) {
                         Toast.makeText(Aty_LogIn.this, "登陆失败,请重试", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(Aty_LogIn.this, "登陆成功", Toast.LENGTH_SHORT).show();

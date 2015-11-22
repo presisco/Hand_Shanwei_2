@@ -23,8 +23,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".Atys.MainActivity">
-        </activity>
         <activity android:name=".Atys.WelcomeAty">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,8 +36,12 @@
         <activity android:name=".Atys.Oder_Tomorrow_Seat_Home">
         </activity>
         <activity android:name=".Atys.Aty_LogIn"/>
-        <activity android:name=".BookSeats.SelectSeatActivity"/>
-        <activity android:name=".BookSeats.Order_Seat_Process"/>
+        <activity android:name=".OrderSeats.SelectSeatActivity"/>
+        <activity android:name=".OrderSeats.Order_Seat_Process"/>
         <activity android:name=".SearchBook.SearchBookResultActivity"/>
+        <activity android:name=".ConfigCenter.SeeOrderSeatHistory"/>
+        <activity android:name=".ConfigCenter.SeeAboutOur"/>
+        <activity android:name=".ConfigCenter.SeeBookRouteCollect"/>
+        <activity android:name=".SearchBook.SeeMap"/>
     </application>
 </manifest>

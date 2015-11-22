@@ -58,7 +58,7 @@
             android:textAlignment="center"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:background="@color/book_seat_titile_color"
+            android:background="@color/book_seat_title_color"
             android:enabled="true"
             android:id="@+id/btnafter_order_result"
             android:text="返回"/>
