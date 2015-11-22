@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.syd.hand_shanwei_2.Atys.Aty_LogIn;
+import com.example.syd.hand_shanwei_2.Atys.HomeActivity;
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
 import com.example.syd.hand_shanwei_2.R;
 
@@ -76,14 +79,16 @@ public class ConfigCenterContentPage extends Fragment implements View.OnClickLis
 
         }else {
 
-        Log.i("bac", haslogin + "是否登陆");
+            Log.i("bac", haslogin + "是否登陆");
             btnlog_in_out.setText("登录");
             id_tv.setText("学号："+"未登录");
         }
+
     }
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
     /**
@@ -126,14 +131,38 @@ public class ConfigCenterContentPage extends Fragment implements View.OnClickLis
     * 退出登录
      * */
     private void logout() {
-        Log.i("bac","退出登录");
-        userinfoUtils.refresh_Login_Status(false);
-        userinfoUtils.unsave_CureentLogin_Info();
-        new AlertDialog.Builder(getActivity()).setTitle("退出登录").setMessage("退出登录成功！").setNegativeButton("放回", new DialogInterface.OnClickListener() {
+        Log.i("bac", "退出登录");
+
+        new AlertDialog.Builder(getActivity()).setTitle("退出登录").setMessage("确定要退出登录？").setNegativeButton("返回", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                // TODO: 2015/11/20 页面重绘
+            }
+        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                userinfoUtils.unsave_CureentLogin_Info();
+                userinfoUtils.refresh_Login_Status(false);
+                dialog.dismiss();
+                new AlertDialog.Builder(getActivity()).setTitle("退出登录").setMessage("退出登录成功！").setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        FragmentManager fm = getFragmentManager();
+                        FragmentTransaction tx = fm.beginTransaction();
+                        /*tx.hide(ConfigCenterContentPage.this);
+                        tx.show(ConfigCenterContentPage.this);*/
+
+                        //tx.replace(R.id.configue,ConfigCenterContentPage.this);
+//                        tx.commit();
+                        Intent intent=new Intent(new Intent(getActivity(),HomeActivity.class));
+                        intent.putExtra("pos",2);
+//                            HomeActivity homeActivity = new HomeActivity();
+//                            homeActivity.viewPager.setCurrentItem(2);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                }).show();
             }
         }).show();
     }

@@ -134,6 +134,8 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                    // Log.i("bac","查看地图");
                     Intent intent=new Intent(parent,SeeMap.class);
                     intent.putExtra("floor",mDataSet.get(position).marcno);
+                    intent.putExtra("bookname",mDataSet.get(position).name);
+                    intent.putExtra("bookcode",mDataSet.get(position).code);
                     parent.startActivity(intent);
                 }
             });

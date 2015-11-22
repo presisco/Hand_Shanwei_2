@@ -63,16 +63,17 @@ public class BookSeatsContentPage extends Fragment{
 //
 //    }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.tab01layout, container, false);
-        Log.d("BookSeatsCP", "onCreateView()");
-
         //Test Data Gen
-        if (isfirstin) {
-            mDataSet = new FloorInfo[0];
+       // mDataSet=new FloorInfo[0];
+        genTestData();
+        new DummyBackgroundTask().execute();
+
+        if (isfirstin){
+            //mDataSet=new FloorInfo[12];
             initiateRefresh();
         }
-        Log.d("BookSeatsCP", "mDataSet.length:" + mDataSet.length);
         // Retrieve the SwipeRefreshLayout and ListView instances
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.curFloorsSwipeRefresh);
 
@@ -105,12 +106,14 @@ public class BookSeatsContentPage extends Fragment{
                 UserinfoUtils userinfoUtils=new UserinfoUtils(getActivity());
                 if (userinfoUtils.get_Login_Status()){
                 Intent newIntent=new Intent(getContext(),Order_Seat_Process.class);
-                newIntent.putExtra(SelectSeatActivity.ORDERMODE,0);
+                newIntent.putExtra(SelectSeatActivity.ORDERMODE,1);
                 startActivity(newIntent);
 
                 }else {
                     Toast.makeText(getActivity(),"请先登录！",Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getActivity(), Aty_LogIn.class));
+                    Intent intent=new Intent(getActivity(), Aty_LogIn.class);
+                    intent.putExtra("from",-1);
+                    startActivity(intent);
                 }
             }
         });
@@ -121,8 +124,7 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Log.d("BookSeatsCP", "onViewCreated()");
+        genTestData();
 
         // BEGIN_INCLUDE (setup_refreshlistener)
         /**
@@ -137,7 +139,7 @@ public class BookSeatsContentPage extends Fragment{
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
+               // Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout");
                 initiateRefresh();
             }
         });
@@ -147,7 +149,7 @@ public class BookSeatsContentPage extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("BookSeatsCP", "onResume");
+
     }
     private void initiateRefresh() {
         //Log.i(LOG_TAG, "initiateRefresh");
@@ -214,6 +216,7 @@ public class BookSeatsContentPage extends Fragment{
                 floorInfos=OrderSeatService.getFloorInfo(userinfoUtils.get_LastId(),userinfoUtils.get_LastPassword());
                 }else {
                 floorInfos=OrderSeatService.getFloorInfo("201100800169","011796");
+
                 }
                 isfirstin=false;
                 mDataSet=new FloorInfo[12];
@@ -222,9 +225,8 @@ public class BookSeatsContentPage extends Fragment{
                     mDataSet[j].total=floorInfos.get(j).total;
                     mDataSet[j].rest=floorInfos.get(j).rest;
                     mDataSet[j].layer=floorInfos.get(j).layer;
-                    System.out.println(mDataSet[j].total+"=="+mDataSet[j].layer+"=="+mDataSet[j].rest);
+                   // System.out.println(mDataSet[j].total+"=="+mDataSet[j].layer+"=="+mDataSet[j].rest);
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -240,12 +242,22 @@ public class BookSeatsContentPage extends Fragment{
         }
 
     }
-
-    Handler handler=new Handler(){
+    private void genTestData() {
+        this.mDataSet =new FloorInfo[12];
+        if (isfirstin) {
+            for (int i = 0; i < 12;i++) {
+               mDataSet[i] = new FloorInfo();
+                mDataSet[i].layer = i + " Fl";
+                mDataSet[i].total = 100;
+                mDataSet[i].rest = 100;
+            }
+        }
+    }
+   /* Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
 
         }
-    };
+    };*/
     //private static int i=0;
 }

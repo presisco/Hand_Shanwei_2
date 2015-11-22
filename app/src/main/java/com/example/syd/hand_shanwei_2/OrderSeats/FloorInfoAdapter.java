@@ -40,7 +40,6 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
         }
     }
     // END_INCLUDE(recyclerViewSampleViewHolder)
-
     /**
      * Initialize the dataset of the Adapter.
      *
@@ -50,7 +49,6 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
         parent=context;
         mDataSet = dataSet;
     }
-
     public void updateDataSet(FloorInfo[] dataset)
     {
         mDataSet=dataset;
@@ -62,7 +60,6 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
         // Create a new view.
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.library_floor_info_cardview, viewGroup, false);
-
         return new ViewHolder(v);
     }
     // END_INCLUDE(recyclerViewOnCreateViewHolder)
@@ -76,11 +73,18 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         TextView op1 = (TextView) viewHolder.getCardView().findViewById(R.id.bookNameTextView);
+        if (op1!=null){
         op1.setText(mDataSet[position].layer);
+        }
         TextView op2 = (TextView) viewHolder.getCardView().findViewById(R.id.bookIdTextView);
+        if (op2!=null){
+
         op2.setText(parent.getResources().getString(R.string.floor_info_cap)+mDataSet[position].total);
+        }
         TextView op3 = (TextView) viewHolder.getCardView().findViewById(R.id.bookCountTextView);
+        if (op3!=null){
         op3.setText(parent.getResources().getString(R.string.floor_info_cur) + mDataSet[position].rest);
+        }
         if (mDataSet[position].rest<=0)
         //viewHolder.getCardView().setCardBackgroundColor(R.color.red);
         {
@@ -96,7 +100,7 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
             op2.setTextColor(parent.getResources().getColor(R.color.black));
             op3.setTextColor(parent.getResources().getColor(R.color.black));
         }
-        viewHolder.getCardView().setOnClickListener(new View.OnClickListener() {
+       /* viewHolder.getCardView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mSelectSeatIntent = new Intent(parent, SelectSeatActivity.class);
@@ -105,7 +109,7 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
                 parent.startActivity(mSelectSeatIntent);
                 Log.d(TAG, "Element " + position + " clicked.");
             }
-        });
+        });*/
 
     }
     // END_INCLUDE(recyclerViewOnBindViewHolder)

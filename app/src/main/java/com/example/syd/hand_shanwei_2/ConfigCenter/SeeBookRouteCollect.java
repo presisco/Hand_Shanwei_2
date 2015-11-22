@@ -19,7 +19,6 @@ public class SeeBookRouteCollect extends AppCompatActivity {
         setContentView(R.layout.see_collected_book_route);
         actionBar.setTitle("借书收藏路线");
         actionBar.setDisplayHomeAsUpEnabled(true);
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

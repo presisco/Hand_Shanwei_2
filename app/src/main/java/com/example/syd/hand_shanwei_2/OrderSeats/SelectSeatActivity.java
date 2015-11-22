@@ -119,7 +119,6 @@ public class SelectSeatActivity extends Activity{
                         if (SeatInfoAdapter.selected == -1) {
                             Toast.makeText(SelectSeatActivity.this, "请选择座位！", Toast.LENGTH_SHORT).show();
                         } else {
-                            // TODO: 2015/11/18 精确预约 1
                             intent.putExtra(SelectSeatActivity.ORDERMODE, 1);
                             intent.putExtra(SelectSeatActivity.ORDER_ROOM, FloorName2ID.getID(mSelectedFloorName));
                             intent.putExtra(SelectSeatActivity.ORDER_SITNUM, mSeatInfoAdapter.getSelectedSeat().id);

@@ -111,8 +111,6 @@ public class MyOrderHistoryListViewAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         }else {//非第一次加载，直接利用tag获取布局
             viewHolder= (ViewHolder) convertView.getTag();
-
-
         }
         //按时间倒序显示
         String time=orderInfos.get(position).getDate();
@@ -124,7 +122,18 @@ public class MyOrderHistoryListViewAdapter extends BaseAdapter {
             viewHolder.getCancel().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cancelOrder();
+                    new AlertDialog.Builder(context).setTitle("取消预约").setMessage("真的要取消预约吗？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            cancelOrder();
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
             });
         }else {
@@ -132,8 +141,6 @@ public class MyOrderHistoryListViewAdapter extends BaseAdapter {
         }
         return convertView;
     }
-
-
 private  class ViewHolder {
     private TextView tv_ordertime = null;
     private TextView tv_order_position = null;

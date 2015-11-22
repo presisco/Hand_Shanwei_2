@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.syd.hand_shanwei_2.R;
 
 import com.example.syd.hand_shanwei_2.Local_Utils.UserinfoUtils;
+import com.example.syd.hand_shanwei_2.ui_components.SlidingTabLayout;
 import com.example.syd.hand_shanwei_2.ui_components.SlidingTabsColorsFragment;
 
 import java.util.Date;
@@ -30,10 +31,12 @@ public class HomeActivity extends FragmentActivity {
     android.app.ActionBar actionBar;
     private  SlidingTabsColorsFragment mSlidingTabsHost;
     WifiManager wifiManager;
+    public static int pos=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+        pos=getIntent().getIntExtra("pos",0);
         checkNetworkState();
        wifiManager= (WifiManager) getSystemService(Context.WIFI_SERVICE);
         //getActionBar().setTitle(getResources().getString(R.string.app_name));
@@ -43,8 +46,9 @@ public class HomeActivity extends FragmentActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.slidingtab_fragment, mSlidingTabsHost);
         transaction.commit();
+
     }
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -58,7 +62,7 @@ public class HomeActivity extends FragmentActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     //实现按两次退出程序
     @Override
     public void onBackPressed() {

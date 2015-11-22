@@ -1,11 +1,13 @@
 package com.example.syd.hand_shanwei_2.SearchBook;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.syd.hand_shanwei_2.R;
 
@@ -14,7 +16,8 @@ import com.example.syd.hand_shanwei_2.R;
  */
 public class SeeMap extends AppCompatActivity {
     private ImageView map;
-    ActionBar actionBar;
+    private ActionBar actionBar;
+    private TextView tvbookmapinfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +26,15 @@ public class SeeMap extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("地图");
         map= (ImageView) findViewById(R.id.imgshowmap);
-        String floor=getIntent().getStringExtra("floor");
+        tvbookmapinfo= (TextView) findViewById(R.id.tvmapbookinfo);
+        Intent intent=getIntent();
+        String floor=intent.getStringExtra("floor");
+        String bookname=intent.getStringExtra("bookname");
+        String boomcode=intent.getStringExtra("bookcode");
+        tvbookmapinfo.setText(bookname+"\n"+boomcode);
         showMap(floor);
         Log.i("bac",floor);
     }
-
     private void showMap(String floor) {
         switch (floor){
             case "3楼":

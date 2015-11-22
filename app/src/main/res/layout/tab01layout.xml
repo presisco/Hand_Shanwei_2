@@ -41,16 +41,16 @@
             android:layout_height="wrap_content"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-    <TextView
+   <!-- <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="@string/bookseathometip"/>
+        android:text="@string/bookseathometip"/>-->
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bookRandomSeatButton"
-        android:text="@string/onkey_book_seat"
+        android:text="@string/book_tomorrow_seat"
         android:background="@color/bookSeatButton"
         android:layout_weight="1" />
 </LinearLayout>
