@@ -1,6 +1,7 @@
 package com.example.syd.hand_shanwei_2.SearchBook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -130,8 +131,10 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View v) {
                     // TODO: 2015/11/22
-                    Log.i("bac","地图");
-
+                   // Log.i("bac","查看地图");
+                    Intent intent=new Intent(parent,SeeMap.class);
+                    intent.putExtra("floor",mDataSet.get(position).marcno);
+                    parent.startActivity(intent);
                 }
             });
             //点击"收藏"的响应
@@ -140,7 +143,6 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onClick(View v) {
                     // TODO: 2015/11/22
                     Log.i("bac","搜藏");
-
                 }
             });
         }
@@ -172,12 +174,10 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         else
             return TYPE_ITEM;
     }
-
     public void appendData(List<BookInfo> append)
     {
         mDataSet.addAll(append);
     }
-
     public void showFooter() {
         mShowFooter = true;
     }

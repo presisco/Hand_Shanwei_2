@@ -3,10 +3,12 @@ package com.example.syd.hand_shanwei_2.SearchBook;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,7 +28,7 @@ import java.util.List;
  * Created by syd on 2015/11/18.
  */
 public class SearchBookResultActivity extends AppCompatActivity implements SearchBookResultAdapter.OnUpdateDataInterface{
-
+    private ActionBar actionBar;
     private Button mSecondarySearchBtn;
     private EditText mSecondarySearchEditText;
     private Spinner mSearchTypeSpinner;
@@ -51,8 +53,10 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        actionBar=getSupportActionBar();
         setContentView(R.layout.search_book_result);
-
+        actionBar.setTitle("查找书籍");
+        actionBar.setDisplayHomeAsUpEnabled(true);
         mSecondarySearchEditText=(EditText)findViewById(R.id.bookSearchResultFilter);
         mSearchBookResultRecyclerView = (RecyclerView) findViewById(R.id.bookSearchResultRecyclerView);
         mSecondarySearchBtn= (Button) findViewById(R.id.bookSecondarySearchButton);
@@ -155,5 +159,14 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
             list = SearchBookService.getBookList(result);
             return result;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==android.R.id.home){
+            onBackPressed();
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

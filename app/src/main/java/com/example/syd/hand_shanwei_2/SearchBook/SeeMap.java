@@ -3,6 +3,7 @@ package com.example.syd.hand_shanwei_2.SearchBook;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
@@ -22,40 +23,41 @@ public class SeeMap extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("地图");
         map= (ImageView) findViewById(R.id.imgshowmap);
-        int floor=getIntent().getIntExtra("floor",0);
+        String floor=getIntent().getStringExtra("floor");
         showMap(floor);
+        Log.i("bac",floor);
     }
 
-    private void showMap(int floor) {
+    private void showMap(String floor) {
         switch (floor){
-            case 3:
+            case "3楼":
                 map.setImageResource(R.drawable._3floor);
                 break;
-            case 4:
+            case "4楼":
                 map.setImageResource(R.drawable._4floor);
                 break;
-            case 5:
+            case "5楼":
                 map.setImageResource(R.drawable._5floor);
                 break;
-            case 6:
+            case "6楼":
                 map.setImageResource(R.drawable._6floor);
                 break;
-            case 7:
+            case "7楼":
                 map.setImageResource(R.drawable._7floor);
                 break;
-            case 8:
+            case "8楼":
                 map.setImageResource(R.drawable._8floor);
                 break;
-            case 9:
+            case "9楼":
                 map.setImageResource(R.drawable._9floor);
                 break;
-            case 10:
+            case "10楼":
                 map.setImageResource(R.drawable._10floor);
                 break;
-            case 11:
+            case "11楼":
                 map.setImageResource(R.drawable._11floor);
                 break;
-            case 12:
+            case "12楼":
                 map.setImageResource(R.drawable._12floor);
                 break;
             default:
