@@ -8,4 +8,6 @@ public class SearchBookConst {
     public static final String SEARCH_TYPE_BOOKNAME="title";
     public static final String SEARCH_TYPE_AUTHOR="author";
     public static final String SEARCH_BOOK_KEY="search_key";
+    public static final Integer SEARCH_BOOK_OPTION_BOX_REQUEST_CODE = 100;
+    public static final Integer SEARCH_OPTION_RESULT_OK = 1000;
 }

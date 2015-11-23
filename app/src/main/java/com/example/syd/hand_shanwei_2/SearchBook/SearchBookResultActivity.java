@@ -33,12 +33,13 @@ import java.util.List;
 public class SearchBookResultActivity extends AppCompatActivity implements SearchBookResultAdapter.OnUpdateDataInterface{
     private ActionBar actionBar;
     private Button mSecondarySearchBtn;
-    //    private EditText mSecondarySearchEditText;
+    private Button mCancel;
+    private EditText mPrimarySearchEditText;
 //    private Spinner mSearchTypeSpinner;
     private ImageView mBackButtonImageView;
-    private ArrayAdapter<String> mSearchTypeArrayAdapter;
+//    private ArrayAdapter<String> mSearchTypeArrayAdapter;
     //结果页面状态
-    private BookListState bookListState;
+//    private BookListState bookListState;
 
     //搜索结果列表
     private SearchBookResultAdapter mSearchBookResultAdapter;
@@ -57,11 +58,27 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        actionBar=getSupportActionBar();
+
+        Intent intent = getIntent();
+        mPrimaryKeyWord = intent.getStringExtra(SearchBookConst.SEARCH_BOOK_KEY);
+        mPrimaryType = intent.getStringExtra(SearchBookConst.SEARCH_TYPE);
+
+        actionBar = getSupportActionBar();
         setContentView(R.layout.search_book_result_2);
         actionBar.setTitle("查找书籍");
         actionBar.setDisplayHomeAsUpEnabled(true);
-//        mSecondarySearchEditText=(EditText)findViewById(R.id.bookSearchResultFilter);
+
+        mPrimarySearchEditText = (EditText) findViewById(R.id.bookPrimarySearchEditText);
+        mPrimarySearchEditText.setText(mPrimaryKeyWord);
+        mPrimarySearchEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchBookResultActivity.this, BookSearchOptionBox.class);
+                intent.putExtra(SearchBookConst.SEARCH_BOOK_KEY, mPrimaryKeyWord);
+                startActivityForResult(intent, SearchBookConst.SEARCH_BOOK_OPTION_BOX_REQUEST_CODE);
+            }
+        });
+
         mSearchBookResultRecyclerView = (RecyclerView) findViewById(R.id.bookSearchResultRecyclerView);
         mSecondarySearchBtn = (Button) findViewById(R.id.bookSecondarySearchButton2);
 //        mSecondarySearchBtn.setOnClickListener(new View.OnClickListener() {
@@ -116,31 +133,32 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
                         .show();
             }
         });
-        mBackButtonImageView = (ImageView) findViewById(R.id.SearchResultBackImageView);
-        mBackButtonImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        final String type_item[] = {getResources().getString(R.string.book_name),
-                getResources().getString(R.string.book_author)};
-        mSearchTypeArrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, type_item);
+//        mBackButtonImageView = (ImageView) findViewById(R.id.SearchResultBackImageView);
+//        mBackButtonImageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
+//        final String type_item[] = {getResources().getString(R.string.book_name),
+//                                    getResources().getString(R.string.book_author)};
+//        mSearchTypeArrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, type_item);
 //        mSearchTypeSpinner=(Spinner)findViewById(R.id.filtOptionSpinner);
 //        mSearchTypeSpinner.setAdapter(mSearchTypeArrayAdapter);
 //        mSearchTypeSpinner.setSelection(0, true);
-
+        mCancel = (Button) findViewById(R.id.bookCancelButton);
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchBookResultActivity.this.finish();
+            }
+        });
         final RecyclerView.LayoutManager mRecyclerViewLayoutManager = new GridLayoutManager(this, 1);
         mSearchBookResultRecyclerView.setLayoutManager(mRecyclerViewLayoutManager);
         mSearchBookResultAdapter = new SearchBookResultAdapter(new ArrayList<BookInfo>(), this, this);
         mSearchBookResultAdapter.hideFooter();
         mSearchBookResultRecyclerView.setAdapter(mSearchBookResultAdapter);
 
-        // 获得意图
-        // 读取数据
-        Intent intent=getIntent();
-        mPrimaryKeyWord = intent.getStringExtra(SearchBookConst.SEARCH_BOOK_KEY);
-        mPrimaryType=intent.getStringExtra(SearchBookConst.SEARCH_TYPE);
         mCurPage=1;
         Toast.makeText(SearchBookResultActivity.this, "正在查找", Toast.LENGTH_SHORT).show();
         new GetBookList().execute();
@@ -214,5 +232,17 @@ public class SearchBookResultActivity extends AppCompatActivity implements Searc
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SearchBookConst.SEARCH_BOOK_OPTION_BOX_REQUEST_CODE) {
+            if (resultCode == SearchBookConst.SEARCH_OPTION_RESULT_OK) {
+                mPrimaryType = data.getStringExtra(SearchBookConst.SEARCH_TYPE);
+                mPrimaryKeyWord = data.getStringExtra(SearchBookConst.SEARCH_BOOK_KEY);
+                mIsPrimarySearch = true;
+                new GetBookList().execute();
+            }
+        }
     }
 }

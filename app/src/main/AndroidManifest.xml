@@ -43,5 +43,6 @@
         <activity android:name=".ConfigCenter.SeeAboutOur"/>
         <activity android:name=".ConfigCenter.SeeBookRouteCollect"/>
         <activity android:name=".SearchBook.SeeMap"/>
+        <activity android:name=".SearchBook.BookSearchOptionBox" />
     </application>
 </manifest>

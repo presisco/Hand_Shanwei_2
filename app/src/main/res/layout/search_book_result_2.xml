@@ -17,30 +17,38 @@
         android:layout_height="wrap_content"
         android:text="@string/searchtwice"
         android:id="@+id/bookSecondarySearchButton2"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/bookPrimarySearchEditText"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="2dp" />
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookPrimarySearchEditText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/bookSecondarySearchButton2"
+        android:layout_toStartOf="@+id/bookSecondarySearchButton2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:id="@+id/bookCancelButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search_book_result_head_text"
+        android:text="@string/twicesearchtip"
         android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:textSize="@dimen/medium_text"
-        android:layout_marginTop="12dp"
-        android:layout_centerHorizontal="true" />
-
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/SearchResultBackImageView"
-        android:clickable="true"
-        android:src="@drawable/back"
+        android:layout_below="@+id/bookCancelButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="2dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp" />
 
 </RelativeLayout>

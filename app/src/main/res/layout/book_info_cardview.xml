@@ -97,7 +97,7 @@
                 android:layout_weight="5"
                 android:layout_height="fill_parent"
                 android:text="失控"
-                android:id="@+id/bookNameTextView"
+                android:id="@+id/floorNameTextView"
                 android:textSize="@dimen/small_text"
                 android:textStyle="bold" />
             <TextView
@@ -118,7 +118,7 @@
                 android:text="G303-49/10"
                 android:id="@+id/bookIdTextView"
                 android:textSize="@dimen/small_text"
-                android:layout_below="@+id/bookNameTextView" />
+                android:layout_below="@+id/floorNameTextView" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -136,7 +136,7 @@
                 android:layout_height="fill_parent"
                 android:text="剩余0本,共3本"
                 android:layout_weight="2"
-                android:id="@+id/bookCountTextView"
+                android:id="@+id/floorUsageTextView"
                 android:textSize="@dimen/small_text"
                 android:layout_alignBottom="@+id/bookAuthorTextView"
                 />

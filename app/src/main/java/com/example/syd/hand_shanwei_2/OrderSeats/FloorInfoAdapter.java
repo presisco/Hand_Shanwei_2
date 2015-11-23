@@ -1,7 +1,6 @@
 package com.example.syd.hand_shanwei_2.OrderSeats;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,15 +27,15 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final CardView cardView;
+        private final View rootView;
         public ViewHolder(View v) {
             super(v);
             // Define click listener for the ViewHolder's View.
-            cardView = (CardView) v.findViewById(R.id.floorInfoCardView);
+            rootView = v;
         }
 
-        public CardView getCardView() {
-            return cardView;
+        public View getRootView() {
+            return rootView;
         }
     }
     // END_INCLUDE(recyclerViewSampleViewHolder)
@@ -72,17 +71,17 @@ public class FloorInfoAdapter extends RecyclerView.Adapter<FloorInfoAdapter.View
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        TextView op1 = (TextView) viewHolder.getCardView().findViewById(R.id.bookNameTextView);
+        TextView op1 = (TextView) viewHolder.getRootView().findViewById(R.id.floorNameTextView);
         if (op1!=null){
-        op1.setText(mDataSet[position].layer);
+            op1.setText(mDataSet[position].layer);
         }
-        TextView op2 = (TextView) viewHolder.getCardView().findViewById(R.id.bookIdTextView);
+        TextView op2 = (TextView) viewHolder.getRootView().findViewById(R.id.floorCapacityTextView);
         if (op2!=null){
-        op2.setText(parent.getResources().getString(R.string.floor_info_cap)+mDataSet[position].total);
+            op2.setText(mDataSet[position].total + "");
         }
-        TextView op3 = (TextView) viewHolder.getCardView().findViewById(R.id.bookCountTextView);
+        TextView op3 = (TextView) viewHolder.getRootView().findViewById(R.id.floorUsageTextView);
         if (op3!=null){
-        op3.setText(parent.getResources().getString(R.string.floor_info_cur) + mDataSet[position].rest);
+            op3.setText(mDataSet[position].rest + "");
         }
         if (mDataSet[position].rest<=0)
         //viewHolder.getCardView().setCardBackgroundColor(R.color.red);

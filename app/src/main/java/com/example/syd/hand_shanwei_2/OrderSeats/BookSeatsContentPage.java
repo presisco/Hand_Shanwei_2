@@ -69,7 +69,7 @@ public class BookSeatsContentPage extends Fragment{
 
         //Test Data Gen
         if (isfirstin) {
-            mDataSet = new FloorInfo[0];
+            genTestData();
             initiateRefresh();
         }
         Log.d("BookSeatsCP", "mDataSet.length:" + mDataSet.length);
@@ -155,7 +155,10 @@ public class BookSeatsContentPage extends Fragment{
         /**
          * Execute the background task, which uses {@link AsyncTask} to load the data.
          */
-        Toast.makeText(getActivity(),"正在加载座位信息...",Toast.LENGTH_SHORT).show();
+        //***************************************************************************************
+        //***************************************************************************************
+        //提示开始加载
+        //Toast.makeText(getActivity(),"正在加载座位信息...",Toast.LENGTH_SHORT).show();
         new DummyBackgroundTask().execute();
     }
     // END_INCLUDE (initiate_refresh)
@@ -168,7 +171,11 @@ public class BookSeatsContentPage extends Fragment{
     private void onRefreshComplete() {
        // Log.i(LOG_TAG, "onRefreshComplete");
 
-        Toast.makeText(getActivity(),"加载完成",Toast.LENGTH_SHORT).show();
+        //提示加载完成
+        //***************************************************************************************
+        //***************************************************************************************
+        //Toast.makeText(getActivity(),"加载完成",Toast.LENGTH_SHORT).show();
+
         // Remove all items from the ListAdapter, and then replace them with the new items
        // mDataSet=null;
         mFloorInfoAdapter.updateDataSet(mDataSet);
@@ -249,4 +256,16 @@ public class BookSeatsContentPage extends Fragment{
         }
     };
     //private static int i=0;
+
+    private void genTestData() {
+        this.mDataSet = new FloorInfo[12];
+        if (isfirstin) {
+            for (int i = 0; i < 12; i++) {
+                mDataSet[i] = new FloorInfo();
+                mDataSet[i].layer = i + " Fl";
+                mDataSet[i].total = 100;
+                mDataSet[i].rest = 100;
+            }
+        }
+    }
 }

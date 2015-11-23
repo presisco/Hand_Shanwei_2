@@ -113,13 +113,13 @@ public class SearchBookResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         // with that element
         if(viewHolder instanceof ItemViewHolder) {
             final CardView cardView = ((ItemViewHolder)viewHolder).getCardView();
-            ((TextView) cardView.findViewById(R.id.bookNameTextView))
+            ((TextView) cardView.findViewById(R.id.floorNameTextView))
                     .setText(mDataSet.get(position).name);
             ((TextView) cardView.findViewById(R.id.bookIdTextView))
                     .setText(mDataSet.get(position).code);
             ((TextView) cardView.findViewById(R.id.bookAuthorTextView))
                     .setText(mDataSet.get(position).detail);
-            ((TextView) cardView.findViewById(R.id.bookCountTextView))
+            ((TextView) cardView.findViewById(R.id.floorUsageTextView))
                     .setText(parent.getResources().getString(R.string.floor_info_cap)
                             + mDataSet.get(position).total
                             + parent.getResources().getString(R.string.book_unit) + ";"
